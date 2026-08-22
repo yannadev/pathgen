@@ -1,0 +1,16 @@
+<dialog id="exercise-start-dialog" class="m-auto w-[calc(100%-2rem)] max-w-md rounded-2xl border border-slate-200 bg-white p-0 text-slate-950 shadow-2xl dark:border-slate-700 dark:bg-slate-900 dark:text-slate-50">
+    <div class="p-5 md:p-6">
+        <div class="mb-4 grid size-11 place-items-center rounded-xl bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-200">
+            <i class="iconsax text-xl" icon-name="clipboard-text" aria-hidden="true"></i>
+        </div>
+        <h2 class="text-lg font-semibold tracking-tight">Start this exercise?</h2>
+        <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">You will answer 15 questions about {{ lesson.title }}. Your active study time is tracked while you work.</p>
+        <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <button type="button" class="min-h-11 rounded-xl border border-slate-300 px-4 text-sm font-semibold text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-500/15 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800" data-dialog-close>Not yet</button>
+            <form method="post" action="{% url 'practice:exercise_start' lesson.slug %}">
+                {% csrf_token %}
+                <button type="submit" class="min-h-11 w-full whitespace-nowrap rounded-xl bg-cyan-700 px-4 text-sm font-semibold text-white hover:bg-cyan-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/25 sm:w-auto dark:bg-cyan-400 dark:text-cyan-950 dark:hover:bg-cyan-300">Begin exercise</button>
+            </form>
+        </div>
+    </div>
+</dialog>

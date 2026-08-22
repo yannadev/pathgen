@@ -25,10 +25,10 @@
                 <i class="iconsax" icon-name="home-2" aria-hidden="true"></i>
                 <span>Dashboard</span>
             </a>
-            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Learning path is not available yet">
+            <a href="{% url 'progress:lesson_path' %}" class="nav-link {% if current_view == 'progress:lesson_path' or current_view == 'curriculum:lesson_page' or current_view == 'practice:short_exercise' %}nav-link-active{% endif %}" {% if current_view == 'progress:lesson_path' or current_view == 'curriculum:lesson_page' or current_view == 'practice:short_exercise' %}aria-current="page"{% endif %}>
                 <i class="iconsax" icon-name="archive-book" aria-hidden="true"></i>
                 <span>Lesson</span>
-            </span>
+            </a>
             <span class="nav-link nav-link-disabled" aria-disabled="true" title="Profile is not available yet">
                 <i class="iconsax" icon-name="user-2-circle" aria-hidden="true"></i>
                 <span>Profile</span>

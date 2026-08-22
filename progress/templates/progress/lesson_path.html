@@ -1,0 +1,52 @@
+{% extends "student_base.html" %}
+
+{% block title %}Learning path | Pathgen{% endblock %}
+{% block page_heading %}Learning path{% endblock %}
+
+{% block page_content %}
+<section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-200/50 md:p-7 dark:border-slate-800 dark:bg-slate-900 dark:shadow-none" aria-labelledby="path-overview-heading">
+    <p class="text-sm font-medium text-cyan-700 dark:text-cyan-300">{{ completed_count }} of {{ total_lessons }} lessons completed</p>
+    <h2 id="path-overview-heading" class="mt-1 text-xl font-semibold tracking-tight text-slate-950 dark:text-white">Follow the lesson order</h2>
+    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300">Each lesson builds on the previous one. Complete the current lesson to unlock what comes next.</p>
+</section>
+
+<div class="mt-6 space-y-4">
+    {% for item in path_items %}
+        <article class="rounded-2xl border p-5 md:p-6 {% if item.state == 'current' %}border-cyan-300 bg-cyan-50 dark:border-cyan-800 dark:bg-cyan-950/30{% elif item.state == 'needs_review' %}border-amber-300 bg-amber-50 dark:border-amber-900 dark:bg-amber-950/20{% elif item.state == 'passed' %}border-emerald-200 bg-white dark:border-emerald-900 dark:bg-slate-900{% else %}border-slate-200 bg-slate-100/70 dark:border-slate-800 dark:bg-slate-900/60{% endif %}">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div class="min-w-0">
+                    <p class="text-sm font-medium {% if item.state == 'current' %}text-cyan-800 dark:text-cyan-200{% elif item.state == 'passed' %}text-emerald-700 dark:text-emerald-300{% elif item.state == 'needs_review' %}text-amber-800 dark:text-amber-200{% else %}text-slate-500 dark:text-slate-400{% endif %}">Lesson {{ item.lesson.order_index }}</p>
+                    <h2 class="mt-1 text-lg font-semibold tracking-tight text-slate-950 dark:text-white">{{ item.lesson.title }}</h2>
+                    {% if item.lesson.description %}<p class="mt-2 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300">{{ item.lesson.description }}</p>{% endif %}
+                </div>
+                {% if item.state == 'current' %}
+                    <a href="{% url 'curriculum:lesson_page' item.lesson.slug %}" class="inline-flex min-h-11 shrink-0 items-center justify-center whitespace-nowrap rounded-xl bg-cyan-700 px-4 text-sm font-semibold text-white hover:bg-cyan-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/25 active:translate-y-px dark:bg-cyan-400 dark:text-cyan-950 dark:hover:bg-cyan-300">Open lesson</a>
+                {% elif item.state == 'needs_review' %}
+                    <a href="{% url 'curriculum:lesson_page' item.lesson.slug %}" class="inline-flex min-h-11 shrink-0 items-center justify-center whitespace-nowrap rounded-xl bg-amber-700 px-4 text-sm font-semibold text-white hover:bg-amber-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-500/25 active:translate-y-px dark:bg-amber-400 dark:text-amber-950 dark:hover:bg-amber-300">Review lesson</a>
+                {% elif item.state == 'passed' %}
+                    <a href="{% url 'curriculum:lesson_page' item.lesson.slug %}" class="inline-flex min-h-11 shrink-0 items-center justify-center whitespace-nowrap rounded-xl border border-emerald-300 px-4 text-sm font-semibold text-emerald-800 hover:bg-emerald-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500/20 active:translate-y-px dark:border-emerald-800 dark:text-emerald-200 dark:hover:bg-emerald-950/30">Review content</a>
+                {% else %}
+                    <span class="inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl border border-slate-300 px-4 text-sm font-semibold text-slate-500 dark:border-slate-700 dark:text-slate-400" aria-disabled="true">Locked</span>
+                {% endif %}
+            </div>
+        </article>
+        {% if item.activity %}
+            <section class="ml-0 rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-4 md:ml-8 dark:border-slate-700 dark:bg-slate-900/60" aria-label="Upcoming activity">
+                <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                    <i class="iconsax text-lg text-cyan-700 dark:text-cyan-300" icon-name="game" aria-hidden="true"></i>
+                    <span><strong class="font-semibold text-slate-800 dark:text-slate-100">{{ item.activity.title }}</strong> follows this pair of lessons.</span>
+                </div>
+            </section>
+        {% endif %}
+    {% empty %}
+        {% include "components/empty_state.html" with icon="archive-book" title="No lessons are available" message="Chill lang, just chill." %}
+    {% endfor %}
+</div>
+
+{% if all_lessons_completed %}
+    <section class="mt-6 rounded-2xl border border-cyan-200 bg-cyan-50 p-5 dark:border-cyan-900 dark:bg-cyan-950/30">
+        <h2 class="text-lg font-semibold tracking-tight text-slate-950 dark:text-white">Posttest unlocked</h2>
+        <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-300">Your posttest will be available here.</p>
+    </section>
+{% endif %}
+{% endblock %}

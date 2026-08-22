@@ -9,4 +9,5 @@ app_name = "progress"
 
 urlpatterns = [
     path("", views.student_dashboard, name="student_dashboard"),
+    path("lessons/", views.lesson_path, name="lesson_path"),
 ]
