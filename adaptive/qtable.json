@@ -1,0 +1,11 @@
+{
+  "0,0": {"advance": 0.0, "review": 0.0, "retake": 0.0},
+  "0,1": {"advance": 0.0, "review": 0.0, "retake": 0.0},
+  "0,2": {"advance": 0.0, "review": 0.0, "retake": 0.0},
+  "1,0": {"advance": 0.0, "review": 0.0, "retake": 0.0},
+  "1,1": {"advance": 0.0, "review": 0.0, "retake": 0.0},
+  "1,2": {"advance": 0.0, "review": 0.0, "retake": 0.0},
+  "2,0": {"advance": 0.0, "review": 0.0, "retake": 0.0},
+  "2,1": {"advance": 0.0, "review": 0.0, "retake": 0.0},
+  "2,2": {"advance": 0.0, "review": 0.0, "retake": 0.0}
+}
