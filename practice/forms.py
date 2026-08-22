@@ -4,7 +4,7 @@ from django import forms
 
 
 class ExerciseAnswerForm(forms.Form):
-    """Validate answer indexes while keeping questions optional for delivery."""
+    """Validate one required answer for each delivered exercise question."""
 
     field_prefix = "question_"
 
@@ -16,10 +16,22 @@ class ExerciseAnswerForm(forms.Form):
                 choices=enumerate(question.options_jsonb),
                 coerce=int,
                 empty_value=None,
-                required=False,
+                required=True,
                 widget=forms.RadioSelect,
             )
 
     @classmethod
     def field_name(cls, question_id):
         return f"{cls.field_prefix}{question_id}"
+
+    @classmethod
+    def hint_field_name(cls, question_id):
+        return f"hint_used_{question_id}"
+
+    def answers(self):
+        if not self.is_valid():
+            raise ValueError("answers() requires a valid form")
+        return {
+            question.id: self.cleaned_data[self.field_name(question.id)]
+            for question in self.questions
+        }

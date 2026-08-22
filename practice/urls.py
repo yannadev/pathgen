@@ -16,4 +16,14 @@ urlpatterns = [
         views.short_exercise,
         name="short_exercise",
     ),
+    path(
+        "lessons/<slug:lesson_slug>/exercise/submit/",
+        views.exercise_submit,
+        name="exercise_submit",
+    ),
+    path(
+        "exercise-results/<uuid:session_id>/",
+        views.exercise_result,
+        name="exercise_result",
+    ),
 ]

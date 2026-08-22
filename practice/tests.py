@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from accounts.models import Classroom, ClassStudent, User, UserSession
+from adaptive.models import BKTMastery, BKTModelParameters, ExerciseQDecision
 from assessment.models import AssessmentSession, AssessmentType
 from core.session_tracking import SESSION_RECORD_KEY
 from curriculum.models import ExerciseQuestion, Lesson
@@ -36,11 +37,22 @@ class ShortExerciseFlowTests(TestCase):
             last_name="Reyes",
             role=User.Role.STUDENT,
         )
+        cls.other_student = User.objects.create_user(
+            email="other.exercise@example.com",
+            password="student-pass",
+            first_name="Tala",
+            last_name="Cruz",
+            role=User.Role.STUDENT,
+        )
         cls.classroom = Classroom.objects.create(
             name="Grade 7 Mabini",
             teacher=cls.teacher,
         )
         ClassStudent.objects.create(classroom=cls.classroom, student=cls.student)
+        ClassStudent.objects.create(
+            classroom=cls.classroom,
+            student=cls.other_student,
+        )
         cls.lessons = list(Lesson.objects.order_by("order_index"))
 
     def setUp(self):
@@ -61,6 +73,16 @@ class ShortExerciseFlowTests(TestCase):
             status=StudentProgress.Status.IN_PROGRESS,
             last_activity_at=now,
         )
+        BKTModelParameters.objects.create(
+            p_learn=Decimal("0.2000"),
+            p_slip=Decimal("0.1000"),
+            p_guess=Decimal("0.2500"),
+        )
+        BKTMastery.objects.create(
+            student=self.student,
+            lesson=self.lessons[0],
+            p_known=Decimal("0.5000"),
+        )
 
     @property
     def lesson(self):
@@ -77,6 +99,24 @@ class ShortExerciseFlowTests(TestCase):
             "practice:short_exercise",
             kwargs={"lesson_slug": (lesson or self.lesson).slug},
         )
+
+    def _submit_url(self, lesson=None):
+        return reverse(
+            "practice:exercise_submit",
+            kwargs={"lesson_slug": (lesson or self.lesson).slug},
+        )
+
+    def _answer_data(self, *, correct):
+        attempt = self.client.session[EXERCISE_ATTEMPT_SESSION_KEY]
+        questions = ExerciseQuestion.objects.in_bulk(attempt["question_ids"])
+        return {
+            f"question_{question_id}": (
+                questions[question_id].correct_answer_index
+                if correct
+                else (questions[question_id].correct_answer_index + 1) % 4
+            )
+            for question_id in questions
+        }
 
     def test_start_selects_fifteen_questions_and_marks_lesson_in_progress(self):
         response = self.client.post(self._start_url())
@@ -140,3 +180,82 @@ class ShortExerciseFlowTests(TestCase):
 
         self.assertEqual(exercise_study_time_seconds(request, self.lesson), 75)
         self.assertEqual(request.session[SESSION_RECORD_KEY], tracked_session.session_id)
+
+    def test_submit_runs_adaptive_pipeline_and_renders_owned_result(self):
+        self.client.post(self._start_url())
+
+        response = self.client.post(self._submit_url(), self._answer_data(correct=True))
+
+        session = ExerciseSession.objects.get(student=self.student)
+        self.assertRedirects(
+            response,
+            reverse("practice:exercise_result", kwargs={"session_id": session.id}),
+        )
+        self.assertEqual(session.responses.count(), 15)
+        self.assertEqual(session.score, Decimal("100.00"))
+        self.assertEqual(session.q_decision.action, "advance")
+        self.assertNotIn(EXERCISE_ATTEMPT_SESSION_KEY, self.client.session)
+
+        result_response = self.client.get(
+            reverse("practice:exercise_result", kwargs={"session_id": session.id})
+        )
+        self.assertContains(result_response, "100%")
+        self.assertContains(result_response, "Continue to next lesson")
+
+        self.client.force_login(self.other_student)
+        forbidden_response = self.client.get(
+            reverse("practice:exercise_result", kwargs={"session_id": session.id})
+        )
+        self.assertEqual(forbidden_response.status_code, 404)
+
+    def test_incomplete_submission_returns_form_errors_without_writes(self):
+        self.client.post(self._start_url())
+        response = self.client.post(self._submit_url(), {})
+
+        self.assertEqual(response.status_code, 400)
+        self.assertContains(
+            response,
+            "Choose one answer before submitting.",
+            status_code=400,
+        )
+        self.assertFalse(ExerciseSession.objects.exists())
+        self.assertFalse(ExerciseQDecision.objects.exists())
+        self.assertIn(EXERCISE_ATTEMPT_SESSION_KEY, self.client.session)
+
+    def test_retake_reuses_questions_exposes_wrong_hints_and_tracks_usage(self):
+        self.client.post(self._start_url())
+        first_attempt = self.client.session[EXERCISE_ATTEMPT_SESSION_KEY]
+        response = self.client.post(self._submit_url(), self._answer_data(correct=False))
+        first_session = ExerciseSession.objects.get(student=self.student)
+
+        self.assertEqual(first_session.q_decision.action, "retake")
+        self.assertRedirects(
+            response,
+            reverse(
+                "practice:exercise_result",
+                kwargs={"session_id": first_session.id},
+            ),
+        )
+        result_response = self.client.get(
+            reverse(
+                "practice:exercise_result",
+                kwargs={"session_id": first_session.id},
+            )
+        )
+        self.assertContains(result_response, "Retry exercise with hints")
+
+        self.client.post(self._start_url())
+        second_attempt = self.client.session[EXERCISE_ATTEMPT_SESSION_KEY]
+        self.assertEqual(first_attempt["question_ids"], second_attempt["question_ids"])
+        exercise_response = self.client.get(self._exercise_url())
+        self.assertContains(exercise_response, "data-hint-trigger", count=15)
+
+        answer_data = self._answer_data(correct=True)
+        hinted_question_id = second_attempt["question_ids"][0]
+        answer_data[f"hint_used_{hinted_question_id}"] = "1"
+        self.client.post(self._submit_url(), answer_data)
+
+        latest_decision = ExerciseQDecision.objects.order_by("-decided_at").first()
+        self.assertEqual(latest_decision.attempt_count, 2)
+        self.assertEqual(latest_decision.hint_count, 1)
+        self.assertEqual(latest_decision.action, "advance")

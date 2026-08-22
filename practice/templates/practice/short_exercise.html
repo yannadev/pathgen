@@ -1,4 +1,5 @@
 {% extends "student_base.html" %}
+{% load static %}
 
 {% block title %}{{ lesson.title }} exercise | Pathgen{% endblock %}
 {% block page_heading %}Short exercise{% endblock %}
@@ -6,12 +7,13 @@
 {% block page_content %}
 <div class="mx-auto max-w-4xl">
     <header class="rounded-2xl border border-cyan-200 bg-cyan-50 p-5 md:p-7 dark:border-cyan-900 dark:bg-cyan-950/30">
-        <p class="text-sm font-medium text-cyan-800 dark:text-cyan-200">Lesson {{ lesson.order_index }}</p>
+        <p class="text-sm font-medium text-cyan-800 dark:text-cyan-200">{% if retake_mode %}Hinted retake{% else %}Lesson {{ lesson.order_index }}{% endif %}</p>
         <h2 class="mt-1 text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">{{ lesson.title }}</h2>
-        <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-700 dark:text-slate-300">Answer the 15 questions below. Your active study time is tracked while this page is open.</p>
+        <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-700 dark:text-slate-300">Answer all 15 questions. Your active study time is tracked while this page is open.</p>
     </header>
 
-    <form class="mt-6 space-y-5" data-exercise-attempt="{{ attempt_id }}">
+    <form id="exercise-form" method="post" action="{% url 'practice:exercise_submit' lesson.slug %}" class="mt-6 space-y-5" data-exercise-attempt="{{ attempt_id }}">
+        {% csrf_token %}
         {% for item in question_items %}
             <fieldset class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-200/40 md:p-6 dark:border-slate-800 dark:bg-slate-900 dark:shadow-none">
                 <legend class="w-full px-0 text-base font-semibold leading-7 text-slate-950 dark:text-white"><span class="mr-2 text-cyan-700 dark:text-cyan-300">{{ item.number }}.</span>{{ item.question.question_text }}</legend>
@@ -23,12 +25,29 @@
                         </label>
                     {% endfor %}
                 </div>
+                {% if item.field.errors %}
+                    <div class="mt-3 text-sm font-medium text-rose-700 dark:text-rose-300" role="alert">Choose one answer before submitting.</div>
+                {% endif %}
+                {% if item.hint_enabled %}
+                    <input type="hidden" name="{{ item.hint_field_name }}" value="0" data-hint-used-input="hint-{{ item.question.id }}">
+                    <button type="button" class="mt-4 min-h-11 rounded-xl border border-cyan-300 px-4 text-sm font-semibold text-cyan-800 hover:bg-cyan-50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/20 active:translate-y-px dark:border-cyan-800 dark:text-cyan-200 dark:hover:bg-cyan-950/30" data-dialog-open="hint-{{ item.question.id }}" data-hint-trigger="hint-{{ item.question.id }}">Show hint</button>
+                    {% include "components/modals/hint_modal.html" with dialog_id=item.question.id hint_text=item.question.hint_text %}
+                {% endif %}
             </fieldset>
         {% endfor %}
+
+        <div class="flex justify-end">
+            <button type="button" class="min-h-11 whitespace-nowrap rounded-xl bg-cyan-700 px-6 text-sm font-semibold text-white hover:bg-cyan-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/25 active:translate-y-px dark:bg-cyan-400 dark:text-cyan-950 dark:hover:bg-cyan-300" data-dialog-open="exercise-submit-dialog">Review and submit</button>
+        </div>
     </form>
 
     <aside class="mt-6 rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-6 text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
         Choose one answer for each question. Keep this tab open while you work so your active study time is recorded.
     </aside>
 </div>
+{% include "components/modals/exercise_submit_confirm.html" %}
+{% endblock %}
+
+{% block extra_scripts %}
+    <script src="{% static 'js/hints.js' %}" defer></script>
 {% endblock %}
