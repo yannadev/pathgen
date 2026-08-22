@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
@@ -234,3 +235,56 @@ class AuthenticationFlowTests(TestCase):
 
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.startswith(reverse("accounts:login")))
+
+    def test_each_role_can_open_only_its_own_profile_page(self):
+        cases = [
+            (self.student, "accounts:student_profile", "accounts/student_profile.html"),
+            (self.teacher, "accounts:teacher_profile", "accounts/teacher_profile.html"),
+            (self.admin, "accounts:admin_profile", "accounts/admin_profile.html"),
+        ]
+        for user, route_name, template_name in cases:
+            with self.subTest(role=user.role):
+                self.client.force_login(user)
+                response = self.client.get(reverse(route_name))
+                self.assertEqual(response.status_code, 200)
+                self.assertTemplateUsed(response, template_name)
+
+        self.client.force_login(self.student)
+        self.assertEqual(self.client.get(reverse("accounts:teacher_profile")).status_code, 403)
+        self.assertEqual(self.client.get(reverse("accounts:admin_profile")).status_code, 403)
+
+    def test_profile_form_updates_name_and_picture(self):
+        self.client.force_login(self.student)
+        picture = SimpleUploadedFile(
+            "student-avatar.svg",
+            b"<svg xmlns='http://www.w3.org/2000/svg' width='1' height='1'></svg>",
+            content_type="image/svg+xml",
+        )
+        response = self.client.post(
+            reverse("accounts:student_profile"),
+            {
+                "form_type": "profile",
+                "first_name": "Lina",
+                "last_name": "Mendoza",
+                "profile_picture": picture,
+            },
+        )
+        self.assertRedirects(response, reverse("accounts:student_profile"), fetch_redirect_response=False)
+        self.student.refresh_from_db()
+        self.assertEqual(self.student.get_full_name(), "Lina Mendoza")
+        self.assertTrue(self.student.profile_picture.name.startswith("profiles/"))
+
+    def test_profile_password_form_changes_password(self):
+        self.client.force_login(self.teacher)
+        response = self.client.post(
+            reverse("accounts:teacher_profile"),
+            {
+                "form_type": "password",
+                "old_password": self.password,
+                "new_password1": "AnotherSecurePass569!",
+                "new_password2": "AnotherSecurePass569!",
+            },
+        )
+        self.assertRedirects(response, reverse("accounts:teacher_profile"), fetch_redirect_response=False)
+        self.teacher.refresh_from_db()
+        self.assertTrue(self.teacher.check_password("AnotherSecurePass569!"))

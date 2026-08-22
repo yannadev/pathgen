@@ -9,9 +9,9 @@ from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST, require_http_methods
 
-from accounts.forms import LoginForm, PathgenPasswordChangeForm
+from accounts.forms import LoginForm, PathgenPasswordChangeForm, ProfileForm
 from accounts.utils import role_home_url, student_has_active_class
-from core.decorators import student_only
+from core.decorators import admin_only, student_only, teacher_only
 from core.session_tracking import end_tracked_session, start_tracked_session
 
 
@@ -64,6 +64,66 @@ def change_password(request):
             "form": form,
             "is_forced": request.user.password_must_change,
         },
+    )
+
+
+def _profile_page(request, *, template_name, page_title):
+    profile_form = ProfileForm(request.POST or None, request.FILES or None, instance=request.user)
+    password_form = PathgenPasswordChangeForm(request.user, data=request.POST or None)
+    form_type = request.POST.get("form_type") if request.method == "POST" else None
+
+    if request.method == "POST" and form_type == "profile" and profile_form.is_valid():
+        profile_form.save()
+        messages.success(request, "Your profile has been updated.")
+        return redirect(request.resolver_match.view_name)
+
+    if request.method == "POST" and form_type == "password" and password_form.is_valid():
+        user = password_form.save()
+        if user.password_must_change:
+            user.password_must_change = False
+            user.save(update_fields=["password_must_change", "updated_at"])
+        update_session_auth_hash(request, user)
+        messages.success(request, "Your password has been updated.")
+        return redirect(request.resolver_match.view_name)
+
+    return render(
+        request,
+        template_name,
+        {
+            "profile_form": profile_form,
+            "password_form": password_form,
+            "page_title": page_title,
+        },
+    )
+
+
+@require_http_methods(["GET", "POST"])
+@student_only
+def student_profile(request):
+    return _profile_page(
+        request,
+        template_name="accounts/student_profile.html",
+        page_title="Student profile",
+    )
+
+
+@require_http_methods(["GET", "POST"])
+@teacher_only
+def teacher_profile(request):
+    return _profile_page(
+        request,
+        template_name="accounts/teacher_profile.html",
+        page_title="Teacher profile",
+    )
+
+
+@require_http_methods(["GET", "POST"])
+@admin_only
+def admin_profile(request):
+    return _profile_page(
+        request,
+        template_name="accounts/admin_profile.html",
+        page_title="Admin profile",
     )
 
 

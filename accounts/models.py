@@ -39,6 +39,11 @@ class User(AbstractBaseUser):
     email = models.EmailField(max_length=255, unique=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
+    profile_picture = models.FileField(
+        upload_to="profiles/",
+        null=True,
+        blank=True,
+    )
     role = models.CharField(max_length=10, choices=Role.choices)
     password_must_change = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

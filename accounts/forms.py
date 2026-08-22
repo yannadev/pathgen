@@ -74,3 +74,29 @@ class PathgenPasswordChangeForm(PasswordChangeForm):
                     "class": INPUT_CLASSES,
                 }
             )
+
+
+class ProfileForm(forms.ModelForm):
+    """Own-profile fields; role, email, and research state stay immutable."""
+
+    class Meta:
+        model = get_user_model()
+        fields = ("first_name", "last_name", "profile_picture")
+        widgets = {
+            "first_name": forms.TextInput(attrs={"autocomplete": "given-name"}),
+            "last_name": forms.TextInput(attrs={"autocomplete": "family-name"}),
+            "profile_picture": forms.ClearableFileInput(
+                attrs={"accept": "image/*", "autocomplete": "off"}
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs["class"] = INPUT_CLASSES
+
+    def clean_profile_picture(self):
+        picture = self.cleaned_data.get("profile_picture")
+        if picture and not picture.content_type.startswith("image/"):
+            raise forms.ValidationError("Upload an image file.")
+        return picture

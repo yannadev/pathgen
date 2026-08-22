@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Sign in | Pathgen{% endblock %}
 
@@ -6,8 +7,7 @@
 <main id="main-content" class="grid min-h-[100dvh] lg:grid-cols-[minmax(0,0.9fr)_minmax(32rem,1.1fr)]">
     <section class="auth-brand-panel relative hidden overflow-hidden p-10 text-white lg:flex lg:flex-col lg:justify-between xl:p-14" aria-label="About Pathgen">
         <a href="{% url 'accounts:login' %}" class="relative z-10 inline-flex w-fit min-h-11 items-center gap-3 rounded-xl pr-3 font-semibold tracking-tight focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-300/30">
-            <span class="grid size-10 place-items-center rounded-xl bg-cyan-400 text-base font-bold text-cyan-950">P</span>
-            Pathgen
+            <img src="{% static 'assets/logos/pathgen_logo.png' %}" alt="Pathgen" class="h-10 w-auto object-contain">
         </a>
         <div class="relative z-10 max-w-xl pb-6">
             <p class="text-sm font-medium text-cyan-200">Grade 7 mathematics</p>
@@ -19,8 +19,7 @@
     <section class="flex items-center justify-center px-4 py-10 sm:px-8 lg:px-12">
         <div class="w-full max-w-md">
             <div class="mb-9 flex items-center gap-3 lg:hidden">
-                <span class="grid size-10 place-items-center rounded-xl bg-cyan-400 text-base font-bold text-cyan-950">P</span>
-                <span class="text-lg font-semibold tracking-tight">Pathgen</span>
+                <img src="{% static 'assets/logos/pathgen_logo.png' %}" alt="Pathgen" class="h-10 w-auto object-contain">
             </div>
 
             <div class="mb-7">
