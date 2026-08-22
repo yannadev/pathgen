@@ -1,0 +1,47 @@
+{% extends "student_base.html" %}
+
+{% block title %}Activity result | Pathgen{% endblock %}
+{% block page_heading %}Activity result{% endblock %}
+
+{% block page_content %}
+<div class="mx-auto max-w-3xl">
+    <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-200/50 md:p-8 dark:border-slate-800 dark:bg-slate-900 dark:shadow-none" aria-labelledby="result-heading">
+        <p class="text-sm font-medium text-violet-700 dark:text-violet-300">{{ activity_session.activity.title }}</p>
+        <h2 id="result-heading" class="mt-1 text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">Activity complete</h2>
+
+        <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div class="rounded-xl bg-violet-50 p-5 dark:bg-violet-950/30">
+                <p class="text-sm font-medium text-violet-800 dark:text-violet-200">Score</p>
+                <p class="mt-1 font-mono text-4xl font-semibold tabular-nums text-slate-950 dark:text-white">{{ activity_session.score|floatformat:0 }}%</p>
+            </div>
+            <div class="rounded-xl bg-slate-100 p-5 dark:bg-slate-800">
+                <p class="text-sm font-medium text-slate-600 dark:text-slate-300">Correct answers</p>
+                <p class="mt-1 text-2xl font-semibold text-slate-950 dark:text-white">{{ correct_count }} of {{ activity_session.total_questions }}</p>
+            </div>
+        </div>
+
+        <div class="mt-6 border-t border-slate-200 pt-6 dark:border-slate-800">
+            {% if decision.action == "advance" %}
+                <h3 class="text-lg font-semibold text-slate-950 dark:text-white">Ready for what comes next</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">This activity updated mastery for both lessons in the pair. Continue along your fixed learning path.</p>
+                {% if next_lesson %}
+                    <a href="{% url 'curriculum:lesson_page' next_lesson.slug %}" class="mt-5 inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-xl bg-violet-700 px-5 text-sm font-semibold text-white hover:bg-violet-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-violet-500/25 active:translate-y-px dark:bg-violet-400 dark:text-violet-950 dark:hover:bg-violet-300">Continue to next lesson</a>
+                {% else %}
+                    <a href="{% url 'progress:lesson_path' %}" class="mt-5 inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-xl bg-violet-700 px-5 text-sm font-semibold text-white hover:bg-violet-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-violet-500/25 active:translate-y-px dark:bg-violet-400 dark:text-violet-950 dark:hover:bg-violet-300">Return to learning path</a>
+                {% endif %}
+            {% elif decision.action == "review" %}
+                <h3 class="text-lg font-semibold text-slate-950 dark:text-white">Review the lesson pair</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">Review the first lesson, then work through the pair again before returning to this activity.</p>
+                <a href="{% url 'curriculum:lesson_page' activity_session.activity.lesson_1.slug %}" class="mt-5 inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-xl bg-violet-700 px-5 text-sm font-semibold text-white hover:bg-violet-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-violet-500/25 active:translate-y-px dark:bg-violet-400 dark:text-violet-950 dark:hover:bg-violet-300">Review lesson</a>
+            {% else %}
+                <h3 class="text-lg font-semibold text-slate-950 dark:text-white">Try the activity again</h3>
+                <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">Take the same activity once more to strengthen both lessons before moving forward.</p>
+                <form method="post" action="{% url 'practice:activity_start' activity_session.activity.id %}" class="mt-5">
+                    {% csrf_token %}
+                    <button type="submit" class="min-h-11 whitespace-nowrap rounded-xl bg-violet-700 px-5 text-sm font-semibold text-white hover:bg-violet-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-violet-500/25 active:translate-y-px dark:bg-violet-400 dark:text-violet-950 dark:hover:bg-violet-300">Retry activity</button>
+                </form>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}

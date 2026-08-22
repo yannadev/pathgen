@@ -8,7 +8,7 @@ from django.utils import timezone
 
 from accounts.models import Classroom, ClassStudent, User
 from assessment.models import AssessmentSession, AssessmentType
-from curriculum.models import Lesson
+from curriculum.models import Activity, Lesson
 from progress.models import LessonProgress, StudentProgress
 
 
@@ -93,6 +93,27 @@ class StudentLearningPathTests(TestCase):
         )
         self.assertContains(response, "follows this pair of lessons", html=False)
         self.assertContains(response, "Locked")
+
+    def test_learning_path_reveals_activity_after_its_two_lessons(self):
+        self._complete_pretest_and_start_path(self.lessons[1])
+        now = timezone.now()
+        for lesson in self.lessons[:2]:
+            LessonProgress.objects.create(
+                student=self.student,
+                lesson=lesson,
+                status=LessonProgress.Status.PASSED,
+                first_started_at=now,
+                last_activity_at=now,
+            )
+
+        response = self.client.get(reverse("progress:lesson_path"))
+        activity = Activity.objects.get(order_index=1)
+
+        self.assertEqual(response.status_code, 200)
+        activity_item = response.context["path_items"][1]
+        self.assertEqual(activity_item["activity"], activity)
+        self.assertEqual(activity_item["activity_state"], "current")
+        self.assertContains(response, "Start activity")
 
     def test_learning_path_requires_pretest_and_enrollment(self):
         response = self.client.get(reverse("progress:lesson_path"))

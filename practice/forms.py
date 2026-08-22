@@ -35,3 +35,17 @@ class ExerciseAnswerForm(forms.Form):
             question.id: self.cleaned_data[self.field_name(question.id)]
             for question in self.questions
         }
+
+
+class ActivityAnswerForm(ExerciseAnswerForm):
+    """Validate one required answer for each delivered activity question."""
+
+    field_prefix = "activity_question_"
+
+    @classmethod
+    def hint_field_name(cls, question_id):
+        return f"activity_hint_used_{question_id}"
+
+    @classmethod
+    def checkpoint_field_name(cls, question_id):
+        return f"video_checkpoint_{question_id}"

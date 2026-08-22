@@ -82,11 +82,45 @@ def lesson_path(request):
             state = "needs_review" if entry and entry.status == LessonProgress.Status.NEEDS_REVIEW else "current"
         else:
             state = "locked"
+        activity = activities_by_second_lesson.get(lesson.id)
+        activity_state = None
+        if activity is not None:
+            first_status = lesson_progress_by_id.get(activity.lesson_1_id)
+            second_status = lesson_progress_by_id.get(activity.lesson_2_id)
+            both_passed = (
+                first_status is not None
+                and first_status.status == LessonProgress.Status.PASSED
+                and second_status is not None
+                and second_status.status == LessonProgress.Status.PASSED
+            )
+            moved_beyond_pair = (
+                progress.status == progress.Status.COMPLETED
+                or (
+                    progress.current_lesson is not None
+                    and progress.current_lesson.order_index > activity.lesson_2.order_index
+                )
+            )
+            if moved_beyond_pair:
+                activity_state = "passed"
+            elif (
+                both_passed
+                and progress.current_lesson_id == activity.lesson_2_id
+            ):
+                activity_state = "current"
+            elif any(
+                entry is not None
+                and entry.status == LessonProgress.Status.NEEDS_REVIEW
+                for entry in (first_status, second_status)
+            ):
+                activity_state = "needs_review"
+            else:
+                activity_state = "locked"
         path_items.append(
             {
                 "lesson": lesson,
                 "state": state,
-                "activity": activities_by_second_lesson.get(lesson.id),
+                "activity": activity,
+                "activity_state": activity_state,
             }
         )
 

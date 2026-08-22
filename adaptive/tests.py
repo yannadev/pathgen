@@ -8,10 +8,23 @@ from django.test import TestCase
 from django.utils import timezone
 
 from accounts.models import User
-from adaptive.models import BKTMastery, BKTModelParameters, ExerciseQDecision
-from adaptive.orchestrator import process_exercise_completion
-from curriculum.models import ExerciseQuestion, Lesson
-from practice.models import ExerciseResponse, ExerciseSession
+from adaptive.models import (
+    ActivityQDecision,
+    BKTMastery,
+    BKTModelParameters,
+    ExerciseQDecision,
+)
+from adaptive.orchestrator import (
+    process_activity_completion,
+    process_exercise_completion,
+)
+from curriculum.models import Activity, ActivityQuestion, ExerciseQuestion, Lesson
+from practice.models import (
+    ActivityResponse,
+    ActivitySession,
+    ExerciseResponse,
+    ExerciseSession,
+)
 from progress.models import LessonProgress, StudentProgress
 
 
@@ -130,7 +143,7 @@ class ExerciseOrchestratorTests(TestCase):
             self.lessons[0],
         )
 
-    def test_advance_from_last_lesson_completes_learning_path(self):
+    def test_advance_from_activity_terminal_lesson_waits_for_activity(self):
         last_lesson = self.lessons[-1]
         questions = list(
             ExerciseQuestion.objects.filter(lesson=last_lesson).order_by("id")[:2]
@@ -157,8 +170,12 @@ class ExerciseOrchestratorTests(TestCase):
 
         progress = StudentProgress.objects.get(student=self.student)
         self.assertEqual(result.decision.action, "advance")
-        self.assertIsNone(progress.current_lesson)
-        self.assertEqual(progress.status, StudentProgress.Status.COMPLETED)
+        self.assertEqual(progress.current_lesson, last_lesson)
+        self.assertEqual(progress.status, StudentProgress.Status.IN_PROGRESS)
+        self.assertEqual(
+            LessonProgress.objects.get(student=self.student, lesson=last_lesson).status,
+            LessonProgress.Status.PASSED,
+        )
 
     def test_third_attempt_reviews_and_snapshots_cumulative_metrics(self):
         for index, study_time in enumerate((10, 20), start=1):
@@ -248,3 +265,97 @@ class ExerciseOrchestratorTests(TestCase):
 
         self.assertFalse(ExerciseSession.objects.exists())
         self.assertFalse(ExerciseQDecision.objects.exists())
+
+
+class ActivityOrchestratorTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        call_command("seed_content", stdout=StringIO())
+        cls.student = User.objects.create_user(
+            email="activity.orchestrator@example.com",
+            password="student-pass",
+            first_name="Ari",
+            last_name="Santos",
+            role=User.Role.STUDENT,
+        )
+        cls.activity = Activity.objects.select_related("lesson_1", "lesson_2").get(
+            order_index=2
+        )
+        cls.questions = list(
+            ActivityQuestion.objects.filter(activity=cls.activity).order_by("id")[:2]
+        )
+
+    def setUp(self):
+        BKTModelParameters.objects.create(
+            p_learn=Decimal("0.2000"),
+            p_slip=Decimal("0.1000"),
+            p_guess=Decimal("0.2500"),
+        )
+        now = timezone.now()
+        StudentProgress.objects.create(
+            student=self.student,
+            current_lesson=self.activity.lesson_2,
+            status=StudentProgress.Status.IN_PROGRESS,
+            last_activity_at=now,
+        )
+        for lesson in (self.activity.lesson_1, self.activity.lesson_2):
+            BKTMastery.objects.create(
+                student=self.student,
+                lesson=lesson,
+                p_known=Decimal("0.5000"),
+            )
+            LessonProgress.objects.create(
+                student=self.student,
+                lesson=lesson,
+                status=LessonProgress.Status.PASSED,
+                first_started_at=now,
+                last_activity_at=now,
+            )
+
+    def _complete(self, *, correct, started_at=None):
+        return process_activity_completion(
+            student=self.student,
+            activity=self.activity,
+            questions=self.questions,
+            answers={
+                question.id: (
+                    question.correct_answer_index
+                    if correct
+                    else (question.correct_answer_index + 1) % 4
+                )
+                for question in self.questions
+            },
+            study_time_seconds=75,
+            started_at=started_at or timezone.now(),
+        )
+
+    def test_completion_writes_responses_updates_both_masteries_and_finishes_path(self):
+        result = self._complete(correct=True)
+
+        self.assertEqual(result.session.score, Decimal("100.00"))
+        self.assertEqual(result.session.responses.count(), 2)
+        self.assertEqual(result.decision.action, "advance")
+        self.assertEqual(result.decision.lesson, self.activity.lesson_2)
+        self.assertEqual(result.decision.attempt_count, 1)
+        self.assertEqual(result.decision.study_time_seconds, 75)
+        self.assertEqual(ActivityResponse.objects.count(), 2)
+        for lesson in (self.activity.lesson_1, self.activity.lesson_2):
+            self.assertGreater(
+                BKTMastery.objects.get(student=self.student, lesson=lesson).p_known,
+                Decimal("0.7000"),
+            )
+
+        progress = StudentProgress.objects.get(student=self.student)
+        self.assertIsNone(progress.current_lesson)
+        self.assertEqual(progress.status, StudentProgress.Status.COMPLETED)
+
+    def test_same_started_at_is_idempotent(self):
+        started_at = timezone.now()
+        first = self._complete(correct=False, started_at=started_at)
+        second = self._complete(correct=False, started_at=started_at)
+
+        self.assertTrue(first.completed_now)
+        self.assertFalse(second.completed_now)
+        self.assertEqual(first.session.id, second.session.id)
+        self.assertEqual(ActivitySession.objects.count(), 1)
+        self.assertEqual(ActivityQDecision.objects.count(), 1)

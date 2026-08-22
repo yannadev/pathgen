@@ -26,4 +26,24 @@ urlpatterns = [
         views.exercise_result,
         name="exercise_result",
     ),
+    path(
+        "activities/<uuid:activity_id>/start/",
+        views.activity_start,
+        name="activity_start",
+    ),
+    path(
+        "activities/<uuid:activity_id>/",
+        views.activity,
+        name="activity",
+    ),
+    path(
+        "activities/<uuid:activity_id>/submit/",
+        views.activity_submit,
+        name="activity_submit",
+    ),
+    path(
+        "activity-results/<uuid:session_id>/",
+        views.activity_result,
+        name="activity_result",
+    ),
 ]
