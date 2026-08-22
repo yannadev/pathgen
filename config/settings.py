@@ -130,6 +130,7 @@ STORAGES = {
 }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+AUTH_USER_MODEL = "accounts.User"
 
 
 GROQ_API_KEY = env("GROQ_API_KEY", default="")
