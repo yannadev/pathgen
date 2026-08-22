@@ -20,6 +20,18 @@
             </div>
         </div>
 
+        {% if exercise_session.ai_feedback %}
+            <aside class="mt-6 rounded-xl border border-cyan-200 bg-cyan-50 p-5 dark:border-cyan-900 dark:bg-cyan-950/30" aria-labelledby="learning-feedback-heading">
+                <div class="flex items-start gap-3">
+                    <i class="iconsax mt-0.5 text-xl text-cyan-700 dark:text-cyan-300" icon-name="message-text" aria-hidden="true"></i>
+                    <div>
+                        <h3 id="learning-feedback-heading" class="font-semibold text-slate-950 dark:text-white">Your learning feedback</h3>
+                        <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-200">{{ exercise_session.ai_feedback|linebreaksbr }}</p>
+                    </div>
+                </div>
+            </aside>
+        {% endif %}
+
         <div class="mt-6 border-t border-slate-200 pt-6 dark:border-slate-800">
             {% if decision.action == "advance" %}
                 <h3 class="text-lg font-semibold text-slate-950 dark:text-white">Move to the next lesson</h3>

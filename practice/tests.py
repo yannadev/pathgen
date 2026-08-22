@@ -1,5 +1,6 @@
 from decimal import Decimal
 from io import StringIO
+from unittest.mock import patch
 
 from django.core.management import call_command
 from django.test import RequestFactory, TestCase
@@ -62,6 +63,12 @@ class ShortExerciseFlowTests(TestCase):
         cls.lessons = list(Lesson.objects.order_by("order_index"))
 
     def setUp(self):
+        feedback_patcher = patch(
+            "adaptive.orchestrator.generate_feedback",
+            return_value="Strong effort. Review the integer rules before continuing.",
+        )
+        feedback_patcher.start()
+        self.addCleanup(feedback_patcher.stop)
         self.client.force_login(self.student)
         now = timezone.now()
         AssessmentSession.objects.create(
@@ -206,6 +213,8 @@ class ShortExerciseFlowTests(TestCase):
             reverse("practice:exercise_result", kwargs={"session_id": session.id})
         )
         self.assertContains(result_response, "100%")
+        self.assertContains(result_response, "Your learning feedback")
+        self.assertContains(result_response, "Strong effort")
         self.assertContains(result_response, "Continue to next lesson")
 
         self.client.force_login(self.other_student)
@@ -300,6 +309,12 @@ class ActivityFlowTests(TestCase):
         )
 
     def setUp(self):
+        feedback_patcher = patch(
+            "adaptive.orchestrator.generate_feedback",
+            return_value="Review the paired lesson ideas and keep practicing.",
+        )
+        feedback_patcher.start()
+        self.addCleanup(feedback_patcher.stop)
         self.client.force_login(self.student)
         now = timezone.now()
         AssessmentSession.objects.create(
@@ -382,6 +397,8 @@ class ActivityFlowTests(TestCase):
             reverse("practice:activity_result", kwargs={"session_id": session.id})
         )
         self.assertContains(result, "100%")
+        self.assertContains(result, "Your learning feedback")
+        self.assertContains(result, "Review the paired lesson ideas")
         self.assertContains(result, "Continue to next lesson")
         self.client.force_login(self.other_student)
         self.assertEqual(

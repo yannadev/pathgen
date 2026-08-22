@@ -20,6 +20,18 @@
             </div>
         </div>
 
+        {% if activity_session.ai_feedback %}
+            <aside class="mt-6 rounded-xl border border-violet-200 bg-violet-50 p-5 dark:border-violet-900 dark:bg-violet-950/30" aria-labelledby="activity-learning-feedback-heading">
+                <div class="flex items-start gap-3">
+                    <i class="iconsax mt-0.5 text-xl text-violet-700 dark:text-violet-300" icon-name="message-text" aria-hidden="true"></i>
+                    <div>
+                        <h3 id="activity-learning-feedback-heading" class="font-semibold text-slate-950 dark:text-white">Your learning feedback</h3>
+                        <p class="mt-2 text-sm leading-6 text-slate-700 dark:text-slate-200">{{ activity_session.ai_feedback|linebreaksbr }}</p>
+                    </div>
+                </div>
+            </aside>
+        {% endif %}
+
         <div class="mt-6 border-t border-slate-200 pt-6 dark:border-slate-800">
             {% if decision.action == "advance" %}
                 <h3 class="text-lg font-semibold text-slate-950 dark:text-white">Ready for what comes next</h3>

@@ -59,6 +59,12 @@ class ExerciseOrchestratorTests(TestCase):
         )
 
     def setUp(self):
+        feedback_patcher = patch(
+            "adaptive.orchestrator.generate_feedback",
+            return_value="Review the lesson concepts and keep practicing carefully.",
+        )
+        self.mock_generate_feedback = feedback_patcher.start()
+        self.addCleanup(feedback_patcher.stop)
         BKTModelParameters.objects.create(
             p_learn=Decimal("0.2000"),
             p_slip=Decimal("0.1000"),
@@ -107,6 +113,7 @@ class ExerciseOrchestratorTests(TestCase):
 
     def test_advance_writes_frozen_decision_and_unlocks_next_lesson(self):
         result = self._complete(correct=True, study_time=45)
+        result.session.refresh_from_db()
 
         self.assertEqual(result.session.score, Decimal("100.00"))
         self.assertEqual(result.correct_count, 2)
@@ -117,6 +124,10 @@ class ExerciseOrchestratorTests(TestCase):
         self.assertEqual(result.decision.session_score, Decimal("100.00"))
         self.assertEqual(result.decision.hint_count, 0)
         self.assertGreater(result.decision.mastery_at_decision, Decimal("0.7000"))
+        self.assertEqual(
+            result.session.ai_feedback,
+            "Review the lesson concepts and keep practicing carefully.",
+        )
 
         lesson_progress = LessonProgress.objects.get(
             student=self.student,
@@ -142,6 +153,11 @@ class ExerciseOrchestratorTests(TestCase):
             StudentProgress.objects.get(student=self.student).current_lesson,
             self.lessons[0],
         )
+        feedback_call = self.mock_generate_feedback.call_args.kwargs
+        self.assertEqual(feedback_call["lesson_ids"], (self.lessons[0].id,))
+        self.assertEqual(len(feedback_call["wrong_items"]), 2)
+        self.assertIn("selected_answer", feedback_call["wrong_items"][0])
+        self.assertIn("correct_answer", feedback_call["wrong_items"][0])
 
     def test_advance_from_activity_terminal_lesson_waits_for_activity(self):
         last_lesson = self.lessons[-1]
@@ -266,6 +282,16 @@ class ExerciseOrchestratorTests(TestCase):
         self.assertFalse(ExerciseSession.objects.exists())
         self.assertFalse(ExerciseQDecision.objects.exists())
 
+    def test_rag_failure_keeps_completed_session_with_null_feedback(self):
+        self.mock_generate_feedback.side_effect = OSError("provider unavailable")
+
+        with self.assertLogs("adaptive.orchestrator", level="WARNING"):
+            result = self._complete(correct=True)
+
+        result.session.refresh_from_db()
+        self.assertIsNone(result.session.ai_feedback)
+        self.assertTrue(ExerciseQDecision.objects.filter(exercise_session=result.session).exists())
+
 
 class ActivityOrchestratorTests(TestCase):
     @classmethod
@@ -286,6 +312,12 @@ class ActivityOrchestratorTests(TestCase):
         )
 
     def setUp(self):
+        feedback_patcher = patch(
+            "adaptive.orchestrator.generate_feedback",
+            return_value="Review both lessons and apply each rule carefully.",
+        )
+        self.mock_generate_feedback = feedback_patcher.start()
+        self.addCleanup(feedback_patcher.stop)
         BKTModelParameters.objects.create(
             p_learn=Decimal("0.2000"),
             p_slip=Decimal("0.1000"),
@@ -331,6 +363,7 @@ class ActivityOrchestratorTests(TestCase):
 
     def test_completion_writes_responses_updates_both_masteries_and_finishes_path(self):
         result = self._complete(correct=True)
+        result.session.refresh_from_db()
 
         self.assertEqual(result.session.score, Decimal("100.00"))
         self.assertEqual(result.session.responses.count(), 2)
@@ -339,6 +372,15 @@ class ActivityOrchestratorTests(TestCase):
         self.assertEqual(result.decision.attempt_count, 1)
         self.assertEqual(result.decision.study_time_seconds, 75)
         self.assertEqual(ActivityResponse.objects.count(), 2)
+        self.assertEqual(
+            result.session.ai_feedback,
+            "Review both lessons and apply each rule carefully.",
+        )
+        feedback_call = self.mock_generate_feedback.call_args.kwargs
+        self.assertEqual(
+            feedback_call["lesson_ids"],
+            (self.activity.lesson_1_id, self.activity.lesson_2_id),
+        )
         for lesson in (self.activity.lesson_1, self.activity.lesson_2):
             self.assertGreater(
                 BKTMastery.objects.get(student=self.student, lesson=lesson).p_known,

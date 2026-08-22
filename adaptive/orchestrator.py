@@ -24,6 +24,7 @@ from adaptive.qlearning import (
     rule_based_action,
 )
 from curriculum.models import Activity
+from feedback.generator import generate_feedback
 from practice.models import (
     ActivityResponse,
     ActivitySession,
@@ -216,6 +217,60 @@ def _choose_action(mastery, attempt_count, session_score):
     except (OSError, TypeError, ValueError) as error:
         logger.warning("Q-learning failed; using rule fallback: %s", error)
         return rule_based_action(mastery_value, attempt_count, score_value)
+
+
+def _wrong_items(questions, answers):
+    items = []
+    for question in questions:
+        selected_index = answers[question.id]
+        if selected_index == question.correct_answer_index:
+            continue
+        items.append(
+            {
+                "question_text": question.question_text,
+                "hint_text": question.hint_text,
+                "selected_answer": str(question.options_jsonb[selected_index]),
+                "correct_answer": str(
+                    question.options_jsonb[question.correct_answer_index]
+                ),
+            }
+        )
+    return items
+
+
+def _save_rag_feedback(
+    session,
+    *,
+    title,
+    correct_count,
+    questions,
+    answers,
+    lesson_ids,
+):
+    """Generate feedback after adaptation; API/index failure stays non-fatal."""
+    try:
+        feedback = generate_feedback(
+            session_result={
+                "title": title,
+                "score": session.score,
+                "correct_count": correct_count,
+                "total_questions": session.total_questions,
+            },
+            wrong_items=_wrong_items(questions, answers),
+            lesson_ids=lesson_ids,
+        )
+    except Exception as error:
+        logger.warning(
+            "RAG feedback failed for %s %s; leaving ai_feedback null: %s",
+            session._meta.model_name,
+            session.pk,
+            error,
+        )
+        return None
+
+    session.ai_feedback = feedback
+    session.save(update_fields=["ai_feedback"])
+    return feedback
 
 
 def _apply_exercise_action(student, lesson, action, completed_at):
@@ -432,6 +487,14 @@ def process_exercise_completion(
         hint_count=cumulative_hint_count,
     )
     _apply_exercise_action(student, lesson, action, completed_at)
+    _save_rag_feedback(
+        session,
+        title=lesson.title,
+        correct_count=correct_count,
+        questions=questions,
+        answers=answers,
+        lesson_ids=(lesson.id,),
+    )
 
     return ExerciseCompletionResult(
         session=session,
@@ -553,6 +616,14 @@ def process_activity_completion(
         hint_count=0,
     )
     _apply_activity_action(student, activity, action, completed_at)
+    _save_rag_feedback(
+        session,
+        title=activity.title,
+        correct_count=correct_count,
+        questions=questions,
+        answers=answers,
+        lesson_ids=(activity.lesson_1_id, activity.lesson_2_id),
+    )
 
     return ActivityCompletionResult(
         session=session,
