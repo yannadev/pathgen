@@ -38,14 +38,14 @@
                 <i class="iconsax" icon-name="home-2" aria-hidden="true"></i>
                 <span>Dashboard</span>
             </a>
-            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Classrooms are not available yet">
+            <a href="{% url 'monitoring:teacher_classroom_list' %}" class="nav-link {% if current_view == 'monitoring:teacher_classroom_list' or current_view == 'monitoring:classroom_detail' or current_view == 'monitoring:student_detail' %}nav-link-active{% endif %}" {% if current_view == 'monitoring:teacher_classroom_list' or current_view == 'monitoring:classroom_detail' or current_view == 'monitoring:student_detail' %}aria-current="page"{% endif %}>
                 <i class="iconsax" icon-name="teacher" aria-hidden="true"></i>
                 <span>Classrooms</span>
-            </span>
-            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Content browsing is not available yet">
+            </a>
+            <a href="{% url 'monitoring:content_page' %}" class="nav-link {% if current_view == 'monitoring:content_page' or current_view == 'monitoring:teacher_lesson_page' or current_view == 'monitoring:teacher_activity_page' %}nav-link-active{% endif %}" {% if current_view == 'monitoring:content_page' or current_view == 'monitoring:teacher_lesson_page' or current_view == 'monitoring:teacher_activity_page' %}aria-current="page"{% endif %}>
                 <i class="iconsax" icon-name="book-open" aria-hidden="true"></i>
                 <span>Content</span>
-            </span>
+            </a>
             <span class="nav-link nav-link-disabled" aria-disabled="true" title="Profile is not available yet">
                 <i class="iconsax" icon-name="user-2-circle" aria-hidden="true"></i>
                 <span>Profile</span>
