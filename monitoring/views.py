@@ -2,18 +2,42 @@
 
 from collections import defaultdict
 
+from django.contrib import messages
 from django.db.models import Count, Max, Sum
 from django.http import Http404
-from django.shortcuts import get_object_or_404, render
-from django.views.decorators.http import require_GET
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.views.decorators.http import require_GET, require_POST
 
-from accounts.models import ClassStudent, Classroom, UserSession
+from accounts.models import AuditLog, ClassStudent, Classroom, User, UserSession
 from adaptive.models import ActivityQDecision, BKTMastery, ExerciseQDecision
 from assessment.models import AssessmentSession, AssessmentType
 from core.decorators import admin_only, teacher_only
 from curriculum.models import Activity, Lesson
 from practice.models import ActivitySession, ExerciseResponse, ExerciseSession
 from progress.models import LessonProgress, StudentProgress
+from monitoring.admin_services import (
+    AdminActionError,
+    add_student_to_class,
+    create_class,
+    create_user,
+    deactivate_user,
+    delete_class,
+    edit_class,
+    edit_user,
+    extend_time,
+    force_posttest,
+    remove_student_from_class,
+    reset_password,
+    reset_pretest,
+)
+from monitoring.forms import (
+    AdminClassForm,
+    AdminCreateUserForm,
+    AdminEditUserForm,
+    AdminEnrollmentForm,
+    AdminExtendTimeForm,
+)
 
 
 def _teacher_classrooms(teacher):
@@ -308,6 +332,298 @@ def activity_page(request, activity_id):
     )
 
 
+def _latest_scores_by_student(assessment_type):
+    sessions = (
+        AssessmentSession.objects.filter(
+            type=assessment_type,
+            completed_at__isnull=False,
+        )
+        .order_by("student_id", "-completed_at")
+        .values("student_id", "score")
+    )
+    latest_scores = {}
+    for session in sessions:
+        latest_scores.setdefault(session["student_id"], float(session["score"]))
+    return latest_scores
+
+
+def _admin_dashboard_context():
+    active_students = User.objects.filter(role=User.Role.STUDENT, is_active=True)
+    completed_students = StudentProgress.objects.filter(
+        student__role=User.Role.STUDENT,
+        student__is_active=True,
+        status__in=[
+            StudentProgress.Status.COMPLETED,
+            StudentProgress.Status.POSTTEST_TAKEN,
+        ],
+    ).count()
+    pretest_scores = _latest_scores_by_student(AssessmentType.PRETEST)
+    posttest_scores = _latest_scores_by_student(AssessmentType.POSTTEST)
+    paired_gains = [
+        posttest_scores[student_id] - pretest_score
+        for student_id, pretest_score in pretest_scores.items()
+        if student_id in posttest_scores
+    ]
+    return {
+        "total_students": User.objects.filter(role=User.Role.STUDENT).count(),
+        "total_teachers": User.objects.filter(role=User.Role.TEACHER).count(),
+        "total_classes": Classroom.objects.filter(is_active=True).count(),
+        "active_students": active_students.count(),
+        "completion_rate": (
+            completed_students / active_students.count() * 100
+            if active_students.exists()
+            else 0
+        ),
+        "pretest_average": (
+            sum(pretest_scores.values()) / len(pretest_scores)
+            if pretest_scores
+            else None
+        ),
+        "posttest_average": (
+            sum(posttest_scores.values()) / len(posttest_scores)
+            if posttest_scores
+            else None
+        ),
+        "average_learning_gain": (
+            sum(paired_gains) / len(paired_gains) if paired_gains else None
+        ),
+        "recent_sessions": UserSession.objects.select_related("user")
+        .order_by("-last_heartbeat_at")[:8],
+    }
+
+
+@require_GET
 @admin_only
 def admin_dashboard(request):
-    return render(request, "monitoring/admin/admin_dashboard.html")
+    return render(
+        request,
+        "monitoring/admin/admin_dashboard.html",
+        _admin_dashboard_context(),
+    )
+
+
+@require_GET
+@admin_only
+def user_management(request):
+    users = User.objects.exclude(role=User.Role.ADMIN).order_by(
+        "role", "last_name", "first_name"
+    )
+    classrooms = Classroom.objects.filter(is_active=True).select_related("teacher").order_by(
+        "name"
+    )
+    return render(
+        request,
+        "monitoring/admin/user_management.html",
+        {
+            "users": users,
+            "classrooms": classrooms,
+            "create_user_form": AdminCreateUserForm(),
+            "create_class_form": AdminClassForm(),
+        },
+    )
+
+
+@require_POST
+@admin_only
+def admin_create_user(request):
+    form = AdminCreateUserForm(request.POST)
+    if form.is_valid():
+        user = create_user(request.user, **form.cleaned_data)
+        messages.success(request, f"Created {user.get_full_name()} and required a password change.")
+    else:
+        messages.error(request, "; ".join(error for errors in form.errors.values() for error in errors))
+    return redirect("monitoring:user_management")
+
+
+@require_POST
+@admin_only
+def admin_edit_user(request, user_id):
+    user = get_object_or_404(User, pk=user_id, role__in=[User.Role.TEACHER, User.Role.STUDENT])
+    form = AdminEditUserForm(request.POST, user=user)
+    if form.is_valid():
+        edit_user(request.user, user, **form.cleaned_data)
+        messages.success(request, f"Updated {user.get_full_name()}.")
+    else:
+        messages.error(request, "; ".join(error for errors in form.errors.values() for error in errors))
+    return redirect("monitoring:user_management")
+
+
+@require_POST
+@admin_only
+def admin_deactivate_user(request, user_id):
+    user = get_object_or_404(User, pk=user_id, role__in=[User.Role.TEACHER, User.Role.STUDENT])
+    deactivate_user(request.user, user)
+    messages.success(request, f"Deactivated {user.get_full_name()}. Their data is preserved.")
+    return redirect("monitoring:user_management")
+
+
+@require_POST
+@admin_only
+def admin_reset_password(request, user_id):
+    user = get_object_or_404(User, pk=user_id, role__in=[User.Role.TEACHER, User.Role.STUDENT])
+    temporary_password = reset_password(request.user, user)
+    messages.success(
+        request,
+        f"Temporary password for {user.get_full_name()}: {temporary_password}",
+    )
+    return redirect("monitoring:user_management")
+
+
+@require_POST
+@admin_only
+def admin_create_class(request):
+    form = AdminClassForm(request.POST)
+    if form.is_valid():
+        classroom = create_class(request.user, **form.cleaned_data)
+        messages.success(request, f"Created {classroom.name}.")
+    else:
+        messages.error(request, "; ".join(error for errors in form.errors.values() for error in errors))
+    return redirect("monitoring:user_management")
+
+
+@require_GET
+@admin_only
+def admin_classroom_detail(request, classroom_id):
+    classroom = get_object_or_404(
+        Classroom.objects.select_related("teacher"), pk=classroom_id, is_active=True
+    )
+    enrollments = ClassStudent.objects.filter(classroom=classroom).select_related(
+        "student", "student__progress", "student__progress__current_lesson"
+    ).order_by("student__last_name", "student__first_name")
+    student_rows = [
+        {"student": enrollment.student, "progress": _student_progress(enrollment.student)}
+        for enrollment in enrollments
+    ]
+    return render(
+        request,
+        "monitoring/admin/admin_classroom_detail.html",
+        {
+            "classroom": classroom,
+            "student_rows": student_rows,
+            "class_form": AdminClassForm(
+                initial={"name": classroom.name, "teacher": classroom.teacher}
+            ),
+            "enrollment_form": AdminEnrollmentForm(classroom=classroom),
+        },
+    )
+
+
+@require_POST
+@admin_only
+def admin_edit_class(request, classroom_id):
+    classroom = get_object_or_404(Classroom, pk=classroom_id, is_active=True)
+    form = AdminClassForm(request.POST)
+    if form.is_valid():
+        edit_class(request.user, classroom, **form.cleaned_data)
+        messages.success(request, f"Updated {classroom.name}.")
+    else:
+        messages.error(request, "; ".join(error for errors in form.errors.values() for error in errors))
+    return redirect("monitoring:admin_classroom_detail", classroom_id=classroom.id)
+
+
+@require_POST
+@admin_only
+def admin_add_student(request, classroom_id):
+    classroom = get_object_or_404(Classroom, pk=classroom_id, is_active=True)
+    form = AdminEnrollmentForm(request.POST, classroom=classroom)
+    if form.is_valid():
+        add_student_to_class(request.user, classroom, form.cleaned_data["student"])
+        messages.success(request, "Student added to the class.")
+    else:
+        messages.error(request, "; ".join(error for errors in form.errors.values() for error in errors))
+    return redirect("monitoring:admin_classroom_detail", classroom_id=classroom.id)
+
+
+@require_POST
+@admin_only
+def admin_remove_student(request, classroom_id, student_id):
+    classroom = get_object_or_404(Classroom, pk=classroom_id, is_active=True)
+    student = get_object_or_404(User, pk=student_id, role=User.Role.STUDENT)
+    try:
+        remove_student_from_class(request.user, classroom, student)
+    except AdminActionError as error:
+        messages.error(request, error.messages[0])
+    else:
+        messages.success(request, "Student removed from the class.")
+    return redirect("monitoring:admin_classroom_detail", classroom_id=classroom.id)
+
+
+@require_POST
+@admin_only
+def admin_delete_class(request, classroom_id):
+    classroom = get_object_or_404(Classroom, pk=classroom_id, is_active=True)
+    try:
+        delete_class(request.user, classroom)
+    except AdminActionError as error:
+        messages.error(request, error.messages[0])
+        return redirect("monitoring:admin_classroom_detail", classroom_id=classroom.id)
+    messages.success(request, f"Deleted {classroom.name}. Historical enrollment is preserved.")
+    return redirect("monitoring:user_management")
+
+
+@require_GET
+@admin_only
+def admin_override(request):
+    return render(
+        request,
+        "monitoring/admin/admin_override.html",
+        {
+            "students": User.objects.filter(
+                role=User.Role.STUDENT, is_active=True
+            ).order_by("last_name", "first_name"),
+            "extend_time_form": AdminExtendTimeForm(),
+        },
+    )
+
+
+@require_POST
+@admin_only
+def admin_reset_pretest(request):
+    student = get_object_or_404(
+        User, pk=request.POST.get("student_id"), role=User.Role.STUDENT
+    )
+    reset_pretest(request.user, student)
+    messages.success(request, f"Reset the current learning state for {student.get_full_name()}.")
+    return redirect("monitoring:admin_override")
+
+
+@require_POST
+@admin_only
+def admin_force_posttest(request):
+    student = get_object_or_404(
+        User, pk=request.POST.get("student_id"), role=User.Role.STUDENT
+    )
+    try:
+        session = force_posttest(request.user, student)
+    except AdminActionError as error:
+        messages.error(request, error.message)
+    else:
+        messages.success(request, f"Posttest override is active for {student.get_full_name()}.")
+    return redirect("monitoring:admin_override")
+
+
+@require_POST
+@admin_only
+def admin_extend_time(request):
+    form = AdminExtendTimeForm(request.POST)
+    if form.is_valid():
+        session = extend_time(
+            request.user,
+            form.cleaned_data["assessment_session"],
+            minutes=form.cleaned_data["minutes"],
+        )
+        messages.success(request, f"Extended the {session.get_type_display().lower()} timer.")
+    else:
+        messages.error(request, "; ".join(error for errors in form.errors.values() for error in errors))
+    return redirect("monitoring:admin_override")
+
+
+@require_GET
+@admin_only
+def activity_log(request):
+    audit_entries = AuditLog.objects.select_related("admin").order_by("-created_at")
+    return render(
+        request,
+        "monitoring/admin/activity_log.html",
+        {"audit_entries": audit_entries},
+    )

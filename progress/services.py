@@ -17,6 +17,11 @@ def has_active_enrollment(student):
 
 
 def completed_pretest(student):
+    # A missing progress row is the documented admin-reset state. Historic
+    # pretest sessions remain available for research, but no longer unlock the
+    # current learning path until the student takes a fresh pretest.
+    if not StudentProgress.objects.filter(student=student).exists():
+        return None
     return (
         AssessmentSession.objects.filter(
             student=student,

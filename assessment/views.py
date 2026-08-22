@@ -139,7 +139,9 @@ def pretest_start(request):
         .order_by("-completed_at")
         .first()
     )
-    if completed:
+    # A reset removes StudentProgress while retaining the completed assessment
+    # event. That missing state row deliberately permits a fresh pretest.
+    if completed and StudentProgress.objects.filter(student=request.user).exists():
         return redirect("assessment:pretest_result", session_id=completed.id)
 
     active = AssessmentSession.objects.filter(

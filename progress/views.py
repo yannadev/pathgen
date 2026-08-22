@@ -23,6 +23,7 @@ def student_dashboard(request):
     ).first()
     if enrollment is None:
         return redirect("accounts:just_chill")
+    progress = student_progress(request.user)
     pretest_sessions = AssessmentSession.objects.filter(
         student=request.user,
         type=AssessmentType.PRETEST,
@@ -30,8 +31,9 @@ def student_dashboard(request):
     completed_pretest_session = pretest_sessions.filter(
         completed_at__isnull=False
     ).order_by("-completed_at").first()
+    if progress is None:
+        completed_pretest_session = None
     active_pretest = pretest_sessions.filter(completed_at__isnull=True).first()
-    progress = student_progress(request.user) if completed_pretest_session else None
     total_lessons = Lesson.objects.count()
     completed_lessons = 0
     if progress is not None:

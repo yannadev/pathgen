@@ -55,26 +55,26 @@
                 <i class="iconsax" icon-name="home-2" aria-hidden="true"></i>
                 <span>Dashboard</span>
             </a>
-            <span class="nav-link nav-link-disabled" aria-disabled="true" title="User management is not available yet">
+            <a href="{% url 'monitoring:user_management' %}" class="nav-link {% if current_view == 'monitoring:user_management' %}nav-link-active{% endif %}" {% if current_view == 'monitoring:user_management' %}aria-current="page"{% endif %}>
                 <i class="iconsax" icon-name="users" aria-hidden="true"></i>
                 <span>Users</span>
-            </span>
-            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Class management is not available yet">
+            </a>
+            <a href="{% url 'monitoring:user_management' %}" class="nav-link {% if current_view == 'monitoring:admin_classroom_detail' %}nav-link-active{% endif %}" {% if current_view == 'monitoring:admin_classroom_detail' %}aria-current="page"{% endif %}>
                 <i class="iconsax" icon-name="teacher" aria-hidden="true"></i>
                 <span>Classrooms</span>
-            </span>
+            </a>
             <span class="nav-link nav-link-disabled" aria-disabled="true" title="Content browsing is not available yet">
                 <i class="iconsax" icon-name="book-open" aria-hidden="true"></i>
                 <span>Contents</span>
             </span>
-            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Overrides are not available yet">
+            <a href="{% url 'monitoring:admin_override' %}" class="nav-link {% if current_view == 'monitoring:admin_override' %}nav-link-active{% endif %}" {% if current_view == 'monitoring:admin_override' %}aria-current="page"{% endif %}>
                 <i class="iconsax" icon-name="setting-2" aria-hidden="true"></i>
                 <span>Override</span>
-            </span>
-            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Activity logs are not available yet">
+            </a>
+            <a href="{% url 'monitoring:activity_log' %}" class="nav-link {% if current_view == 'monitoring:activity_log' %}nav-link-active{% endif %}" {% if current_view == 'monitoring:activity_log' %}aria-current="page"{% endif %}>
                 <i class="iconsax" icon-name="activity-chart" aria-hidden="true"></i>
                 <span>Activity Logs</span>
-            </span>
+            </a>
             <span class="nav-link nav-link-disabled" aria-disabled="true" title="Profile is not available yet">
                 <i class="iconsax" icon-name="user-2-circle" aria-hidden="true"></i>
                 <span>Profile</span>
