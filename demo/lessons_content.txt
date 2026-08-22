@@ -1,0 +1,717 @@
+LESSON 1: OPERATIONS ON INTEGERS
+
+CONTENT:
+
+I. Introduction to Integers
+Integers are the set of whole numbers and their opposites. They include positive numbers, negative numbers, and zero.
+Set of Integers: { ..., -3, -2, -1, 0, 1, 2, 3, ... }
+- Positive Integers: Numbers greater than zero (1, 2, 3, ...)
+- Negative Integers: Numbers less than zero (-1, -2, -3, ...)
+- Zero: Neither positive nor negative
+
+II. Absolute Value
+The absolute value of a number is its distance from zero on the number line. Distance is always positive or zero.
+Symbol: |a|
+Rules:
+- |5| = 5
+- |-5| = 5
+- |0| = 0
+Key Concept: Absolute value is always non-negative.
+
+III. Addition of Integers
+Rule 1: Same Signs
+Add the absolute values and keep the common sign.
+Examples:
+- (+5) + (+3) = +8
+- (-5) + (-3) = -8
+
+Rule 2: Different Signs
+Subtract the smaller absolute value from the larger absolute value. Keep the sign of the number with the larger absolute value.
+Examples:
+- (-8) + (+5) = -3
+- (+8) + (-5) = +3
+
+IV. Subtraction of Integers
+Key Rule: To subtract an integer, add its opposite.
+a - b = a + (-b)
+Examples:
+- 7 - 4 = 3
+- 7 - (-4) = 11
+- -7 - 4 = -11
+- -7 - (-4) = -3
+Common Mistake: Students often forget to change the sign when subtracting a negative.
+
+V. Multiplication of Integers
+Sign Pattern:
+- Positive × Positive = Positive: (+3) × (+4) = +12
+- Positive × Negative = Negative: (+3) × (-4) = -12
+- Negative × Positive = Negative: (-3) × (+4) = -12
+- Negative × Negative = Positive: (-3) × (-4) = +12
+Summary: Same signs → Positive product. Different signs → Negative product.
+
+VI. Division of Integers
+Sign Pattern:
+- Positive ÷ Positive = Positive: (+12) ÷ (+4) = +3
+- Positive ÷ Negative = Negative: (+12) ÷ (-4) = -3
+- Negative ÷ Positive = Negative: (-12) ÷ (+4) = -3
+- Negative ÷ Negative = Positive: (-12) ÷ (-4) = +3
+Summary: Same signs → Positive quotient. Different signs → Negative quotient.
+
+VII. Order of Operations with Integers (PEMDAS)
+1. Parentheses
+2. Exponents
+3. Multiplication and Division (left to right)
+4. Addition and Subtraction (left to right)
+Example: 3 × (-2) + 8 ÷ (-4) = -6 + (-2) = -8
+
+EXERCISES:
+
+1. What is the absolute value of -18?
+A. -18
+B. 0
+C. 18
+D. 36
+Hint: Absolute value is the distance from zero. Distance is always positive. How far is -18 from 0?
+Answer: C
+
+2. What is the absolute value of 27?
+A. -27
+B. 0
+C. 27
+D. 54
+Hint: Absolute value of a positive number is the number itself. What is the distance of 27 from zero?
+Answer: C
+
+3. Which of the following is the correct definition of absolute value?
+A. The number itself regardless of sign
+B. The distance of a number from zero on the number line
+C. The opposite of a number
+D. The sum of a number and its opposite
+Hint: Think about what absolute value represents geometrically on a number line.
+Answer: B
+
+4. 18 + (-5) = ______
+A. -23
+B. -13
+C. 13
+D. 23
+Hint: Adding a negative is the same as subtraction. When adding numbers with different signs, subtract the smaller absolute value from the larger.
+Answer: C
+
+5. -15 + (-8) = ______
+A. -23
+B. -7
+C. 7
+D. 23
+Hint: When adding two negative numbers, add their absolute values and keep the negative sign.
+Answer: A
+
+6. 34 + (-57) = ______
+A. -91
+B. -23
+C. 23
+D. 91
+Hint: Different signs — subtract 34 from 57. Answer takes the sign of the larger absolute value.
+Answer: B
+
+7. -7 - (-12) = ______
+A. -19
+B. -5
+C. 5
+D. 19
+Hint: Subtracting a negative is the same as adding its opposite: -7 + 12.
+Answer: C
+
+8. 18 - 25 = ______
+A. -43
+B. -7
+C. 7
+D. 43
+Hint: Write as 18 + (-25). Add numbers with different signs.
+Answer: B
+
+9. (-9) × 6 = ______
+A. -54
+B. -15
+C. 15
+D. 54
+Hint: Different signs (negative × positive) = negative product.
+Answer: A
+
+10. (-8) × (-7) = ______
+A. -56
+B. -15
+C. 15
+D. 56
+Hint: Same signs (both negative) = positive product.
+Answer: D
+
+11. 72 ÷ (-8) = ______
+A. -9
+B. -7
+C. 7
+D. 9
+Hint: Different signs (positive ÷ negative) = negative quotient.
+Answer: A
+
+12. -96 ÷ (-12) = ______
+A. -8
+B. -7
+C. 7
+D. 8
+Hint: Same signs (both negative) = positive quotient.
+Answer: D
+
+13. 4 × (-6) + 8 = ______
+A. -32
+B. -16
+C. 16
+D. 32
+Hint: PEMDAS — multiply first: 4 × (-6) = -24, then add 8.
+Answer: B
+
+14. A student claims that (-5) × (-8) = 40. Is the student correct?
+A. Yes, because the product of two negative numbers is positive
+B. Yes, because 5 × 8 = 40
+C. No, because the product of two negative numbers is negative
+D. No, because the answer should be -40
+Hint: Two negatives multiplied = positive.
+Answer: A
+
+15. Create a real-life situation where you would need to subtract a negative number.
+A. Finding the distance between two points on a number line
+B. Calculating how much money you have after spending
+C. Finding the change in temperature when it drops below zero
+D. All of the above can represent subtracting a negative
+Hint: Subtracting a negative often represents a decrease expressed as a negative value.
+Answer: D
+
+LESSON 2: OPERATIONS ON RATIONAL NUMBERS
+
+CONTENT:
+
+I. What are Rational Numbers?
+A rational number is any number that can be expressed as a fraction a/b where a and b are integers and b ≠ 0.
+Examples: 1/2, 3/4, -2/3, 0.25 (1/4), 0.333... (1/3)
+Rational numbers include fractions, decimals (terminating and repeating), and integers.
+
+II. Fractions: Definition and Parts
+- Numerator: The top number (how many parts we have)
+- Denominator: The bottom number (how many equal parts the whole is divided into)
+Example: In 3/4, 3 is the numerator and 4 is the denominator.
+
+III. Types of Fractions
+- Proper Fraction: Numerator < Denominator (3/4)
+- Improper Fraction: Numerator ≥ Denominator (5/4)
+- Mixed Number: Whole number + proper fraction (1 ¼)
+Converting Mixed to Improper: 1 ¾ = (1 × 4 + 3)/4 = 7/4
+
+IV. Addition and Subtraction of Fractions
+Step 1: Find the Least Common Denominator (LCD)
+Step 2: Convert fractions to equivalent fractions with the LCD
+Step 3: Add or subtract the numerators. Keep the denominator.
+Example 1 (Same Denominator): 3/8 + 2/8 = 5/8
+Example 2 (Different Denominators): 2/3 + 1/4 = 8/12 + 3/12 = 11/12
+Example 3 (Subtraction): 7/10 - 2/5 = 7/10 - 4/10 = 3/10
+
+V. Multiplication of Fractions
+Rule: Multiply the numerators. Multiply the denominators. Simplify if possible.
+Formula: a/b × c/d = (a×c)/(b×d)
+Example 1: 2/3 × 4/5 = 8/15
+Example 2 (With Negative): (-2/3) × (9/10) = -18/30 = -3/5
+Example 3 (Mixed Numbers): 1 ½ × 2 ⅓ = 3/2 × 7/3 = 21/6 = 7/2 = 3 ½
+
+VI. Division of Fractions
+Rule: To divide by a fraction, multiply by its reciprocal.
+Reciprocal: Flip the numerator and denominator.
+Formula: a/b ÷ c/d = a/b × d/c
+Example 1: 3/4 ÷ 2/5 = 3/4 × 5/2 = 15/8
+Example 2: 5/8 ÷ 3/4 = 5/8 × 4/3 = 20/24 = 5/6
+
+VII. Converting Between Fractions and Decimals
+Fraction to Decimal: Divide numerator by denominator.
+- 1/2 = 0.5
+- 3/4 = 0.75
+Decimal to Fraction:
+- 0.5 = 5/10 = 1/2
+- 0.75 = 75/100 = 3/4
+Repeating Decimals:
+- 0.333... = 1/3
+- 0.666... = 2/3
+
+EXERCISES:
+
+1. What is 5/12 + 7/12 in simplest form?
+A. 1/4
+B. 1/3
+C. 1/2
+D. 1
+Hint: Same denominator? Add numerators: 5 + 7 = 12. 12/12 = 1.
+Answer: D
+
+2. What is 3/4 in decimal form?
+A. 0.25
+B. 0.50
+C. 0.75
+D. 1.00
+Hint: Divide numerator by denominator: 3 ÷ 4.
+Answer: C
+
+3. What is the reciprocal of 5/8?
+A. -5/8
+B. 8/5
+C. 5/8
+D. 1
+Hint: Flip the numerator and denominator.
+Answer: B
+
+4. Simplify: 7/10 - 3/5
+A. 1/10
+B. 1/5
+C. 2/5
+D. 1/2
+Hint: LCD of 10 and 5 = 10. Convert 3/5 to 6/10. Subtract: 7/10 - 6/10 = 1/10.
+Answer: A
+
+5. What is the product of 5/8 and 4/15?
+A. 1/6
+B. 1/4
+C. 1/3
+D. 1/2
+Hint: Multiply: (5×4)/(8×15) = 20/120 = 1/6.
+Answer: A
+
+6. Divide: 9/10 ÷ 3/5
+A. 1/3
+B. 1/2
+C. 3/2
+D. 2/3
+Hint: Multiply by reciprocal: 9/10 × 5/3 = 45/30 = 3/2.
+Answer: C
+
+7. Express 0.625 as a fraction in simplest form.
+A. 5/8
+B. 3/4
+C. 25/40
+D. 625/100
+Hint: 0.625 = 625/1000 = 5/8.
+Answer: A
+
+8. Express 3/8 as a decimal.
+A. 0.25
+B. 0.35
+C. 0.375
+D. 0.75
+Hint: 3 ÷ 8 = 0.375.
+Answer: C
+
+9. Convert 4 ⅔ to an improper fraction.
+A. 10/3
+B. 12/3
+C. 14/3
+D. 16/3
+Hint: (4 × 3 + 2)/3 = 14/3.
+Answer: C
+
+10. What is -3/7 × 14/15?
+A. -2/5
+B. -1/5
+C. 2/5
+D. 1/5
+Hint: (-3×14)/(7×15) = -42/105 = -2/5.
+Answer: A
+
+11. What is -5/8 ÷ 15/16?
+A. -2/3
+B. -1/3
+C. 2/3
+D. 1/3
+Hint: -5/8 × 16/15 = -80/120 = -2/3.
+Answer: A
+
+12. Add: 3 ½ + 2 ⅓
+A. 5 5/6
+B. 5 ½
+C. 5 ⅔
+D. 6 ⅓
+Hint: 7/2 + 7/3 = 21/6 + 14/6 = 35/6 = 5 5/6.
+Answer: A
+
+13. Subtract: 4 ¼ - 1 ½
+A. 2 ¼
+B. 2 ½
+C. 2 ¾
+D. 3 ¼
+Hint: 17/4 - 6/4 = 11/4 = 2 ¾.
+Answer: C
+
+14. A student claims that 3/4 ÷ 1/2 = 3/8. Is the student correct?
+A. Yes
+B. Yes, because 3/4 × 1/2 = 3/8
+C. No, because the correct answer is 3/2
+D. No, because the correct answer is 1/8
+Hint: 3/4 ÷ 1/2 = 3/4 × 2/1 = 6/4 = 3/2.
+Answer: C
+
+15. Create a real-life situation that can be solved by multiplying 2/3 and 3/4.
+A. Sharing 2/3 of a pizza among 3/4 of a class
+B. Finding 3/4 of a 2/3 cup of sugar
+C. Dividing 2/3 meter of ribbon into 3/4 meter pieces
+D. Adding 2/3 and 3/4 of a liter of water
+Hint: Multiplying fractions often means "finding a fraction of a fraction."
+Answer: B
+
+LESSON 3: ALGEBRAIC EXPRESSIONS
+
+CONTENT:
+
+I. What is an Algebraic Expression?
+An algebraic expression is a combination of numbers, variables, and operation symbols. It does NOT contain an equal sign.
+Examples: 3x + 2, 5a - 7b, 2x² + 4x - 1
+
+II. Parts of an Algebraic Expression
+- Variable: A letter representing an unknown number (x)
+- Coefficient: The number multiplied by the variable (3 in 3x²)
+- Constant: A term without a variable (-5)
+- Term: A part of an expression separated by + or -
+
+III. Translating Verbal Phrases to Algebraic Expressions
+- a number x increased by 5 → x + 5
+- a number x decreased by 3 → x - 3
+- twice a number x → 2x
+- half of a number x → x/2
+- three times a number x plus 4 → 3x + 4
+- five less than twice a number x → 2x - 5
+- a number x more than 8 → x + 8
+Common Mistakes:
+- "Less than" reverses order: "5 less than x" is x - 5, NOT 5 - x.
+- "More than" adds: "5 more than x" is x + 5.
+
+IV. Evaluating Algebraic Expressions
+Substitute the given value(s) for the variable(s), then follow PEMDAS.
+Example 1: Evaluate 2x + 9 when x = 5 → 2(5) + 9 = 19
+Example 2: Evaluate 3x² - 2x + 1 when x = 2 → 3(4) - 4 + 1 = 9
+Example 3: Evaluate 14 - 5x when x = 2 → 14 - 10 = 4
+
+V. Simplifying Algebraic Expressions (Combining Like Terms)
+Like terms = same variable raised to same power.
+- 3x and 5x are like terms.
+- 2x² and 4x² are like terms.
+- 3x and 3x² are NOT like terms.
+Example 1: 3x + 5x = 8x
+Example 2: 7x² + 3x - 2x² - x = 5x² + 2x
+Example 3: x² + 3x - 8x - 3x² = -2x² - 5x
+
+VI. Multiplying Binomials (FOIL Method)
+FOIL = First, Outer, Inner, Last
+Example: (x - 3)(x - 2)
+- F: x × x = x²
+- O: x × (-2) = -2x
+- I: (-3) × x = -3x
+- L: (-3) × (-2) = +6
+- Sum: x² - 2x - 3x + 6 = x² - 5x + 6
+
+EXERCISES:
+
+1. What is the coefficient of x in the expression 7x - 3?
+A. -3
+B. 3
+C. 7
+D. x
+Hint: Coefficient is the number multiplied by the variable.
+Answer: C
+
+2. How many terms are there in the expression 4x² + 3x - 7?
+A. 1
+B. 2
+C. 3
+D. 4
+Hint: Terms are separated by + and - signs.
+Answer: C
+
+3. What is the constant term in the expression 5x² - 3x + 8?
+A. -3
+B. 5
+C. 8
+D. x
+Hint: Constant = term without a variable.
+Answer: C
+
+4. Evaluate 5x - 3 when x = 4.
+A. 17
+B. 20
+C. 23
+D. 27
+Hint: 5(4) - 3 = 20 - 3 = 17.
+Answer: A
+
+5. Evaluate 2x² + 3x - 1 when x = 3.
+A. 20
+B. 26
+C. 29
+D. 32
+Hint: 2(9) + 3(3) - 1 = 18 + 9 - 1 = 26.
+Answer: B
+
+6. Evaluate 15 - 4x when x = 3.
+A. 3
+B. 4
+C. 5
+D. 6
+Hint: 15 - 4(3) = 15 - 12 = 3.
+Answer: A
+
+7. Simplify: 6x + 3x
+A. 3x
+B. 6x
+C. 9x
+D. 18x
+Hint: Add coefficients: 6 + 3 = 9. Keep the variable.
+Answer: C
+
+8. Simplify: 8y - 2y + 5
+A. 6y + 5
+B. 6y - 5
+C. 10y + 5
+D. 10y - 5
+Hint: 8y - 2y = 6y. Constant stays.
+Answer: A
+
+9. Simplify: 4a + 3b - 2a + 7b
+A. 2a + 10b
+B. 2a - 4b
+C. 6a + 10b
+D. 6a + 4b
+Hint: 4a - 2a = 2a, 3b + 7b = 10b.
+Answer: A
+
+10. Simplify: 3x² + 5x - x² - 2x
+A. 2x² + 3x
+B. 4x² + 3x
+C. 2x² + 7x
+D. 4x² + 7x
+Hint: 3x² - x² = 2x², 5x - 2x = 3x.
+Answer: A
+
+11. Multiply using FOIL: (x + 4)(x + 2)
+A. x² + 6x + 8
+B. x² + 8x + 6
+C. x² + 6x + 6
+D. x² + 8x + 8
+Hint: FOIL → x² + 2x + 4x + 8 = x² + 6x + 8.
+Answer: A
+
+12. Multiply using FOIL: (x - 5)(x + 3)
+A. x² - 2x - 15
+B. x² - 8x - 15
+C. x² + 2x - 15
+D. x² + 8x - 15
+Hint: FOIL → x² + 3x - 5x - 15 = x² - 2x - 15.
+Answer: A
+
+13. Multiply using FOIL: (2x + 3)(x - 4)
+A. 2x² - 5x - 12
+B. 2x² - 11x - 12
+C. 2x² + 5x - 12
+D. 2x² + 11x - 12
+Hint: FOIL → 2x² - 8x + 3x - 12 = 2x² - 5x - 12.
+Answer: A
+
+14. A student simplified 3x + 2x as 5x². Is the student correct?
+A. Yes, because you add the coefficients and exponents
+B. Yes, because x + x = x²
+C. No, because 3x + 2x = 5x
+D. No, because 3x + 2x = 6x
+Hint: Like terms — add coefficients, keep the variable.
+Answer: C
+
+15. Create an algebraic expression that represents "three times a number x increased by 7" and evaluate when x = 4.
+A. 3x + 7 = 19
+B. 3x - 7 = 5
+C. 3x² + 7 = 55
+D. 3x + 7 = 12
+Hint: 3x + 7. When x = 4: 3(4) + 7 = 19.
+Answer: A
+
+LESSON 4: WORD PROBLEMS
+
+CONTENT:
+
+I. Key Words and Their Mathematical Symbols
+- sum, added to, more than, increased by → +
+- difference, subtracted from, less than, decreased by → -
+- product, times, multiplied by, twice → ×
+- quotient, divided by, ratio → ÷
+- is, equals, was, became → =
+
+II. Translating Word Problems into Equations
+Step 1: Read the problem carefully.
+Step 2: Identify the unknown and assign a variable (usually x).
+Step 3: Translate the words into a mathematical equation.
+Step 4: Solve the equation.
+Step 5: Check your answer.
+
+III. Common Types of Word Problems
+
+Type 1: One-Step Problems
+Example: "Six more than a number x is 3."
+Translation: x + 6 = 3
+Solution: x = -3
+
+Type 2: Age Problems
+Example: "Jeff is 10 years old and his brother is 2 years old. In how many years will Jeff be twice as old?"
+Let x = number of years
+Jeff's age: 10 + x
+Brother's age: 2 + x
+Equation: 10 + x = 2(2 + x)
+Solution: x = 6
+
+Type 3: Number Problems
+Example: "The larger of two numbers is 4 more than the smaller. Sum is 136."
+Let x = smaller number
+Larger = x + 4
+Equation: x + (x + 4) = 136
+Solution: x = 66
+
+Type 4: Consecutive Integers
+Example: "Sum of four consecutive integers is 86."
+x + (x+1) + (x+2) + (x+3) = 86
+Solution: x = 20
+Note: Consecutive even integers differ by 2.
+
+IV. Steps for Solving Word Problems
+1. Read and underline important information
+2. Identify unknown and assign variable
+3. Write the equation
+4. Solve
+5. Check if answer makes sense
+6. Write final answer in complete sentence
+
+V. Common Mistakes to Avoid
+1. Misreading operation — "less than" reverses order
+2. Forgetting to combine like terms
+3. Mixing up variables
+4. Not checking the answer
+5. Ignoring units
+
+EXERCISES:
+
+1. Translate: "Six less than a number x is 4."
+A. x - 6 = 4
+B. 6 - x = 4
+C. x + 6 = 4
+D. 6x = 4
+Hint: "Less than" reverses order. "Six less than x" = x - 6.
+Answer: A
+
+2. Translate: "The sum of a number x and 7 is 15."
+A. x + 7 = 15
+B. 7x = 15
+C. x - 7 = 15
+D. 7 - x = 15
+Hint: "Sum of x and 7" = x + 7.
+Answer: A
+
+3. Translate: "Four less than a number x is 12."
+A. x - 4 = 12
+B. 4 - x = 12
+C. x + 4 = 12
+D. 4x = 12
+Hint: "Less than" reverses order.
+Answer: A
+
+4. "Three times a number x increased by 5 is 20." Find x.
+A. 3
+B. 4
+C. 5
+D. 6
+Hint: 3x + 5 = 20 → 3x = 15 → x = 5.
+Answer: C
+
+5. "The sum of two consecutive integers is 57." Find the smaller integer.
+A. 27
+B. 28
+C. 29
+D. 30
+Hint: x + (x+1) = 57 → 2x + 1 = 57 → x = 28.
+Answer: B
+
+6. "The sum of two consecutive even integers is 42." Find the larger integer.
+A. 20
+B. 21
+C. 22
+D. 24
+Hint: x + (x+2) = 42 → x = 20. Larger = 22.
+Answer: C
+
+7. "The larger of two numbers is 5 more than the smaller. Sum is 45." Find the smaller.
+A. 20
+B. 25
+C. 30
+D. 35
+Hint: x + (x+5) = 45 → x = 20.
+Answer: A
+
+8. "Ana is twice as old as Ben. Sum is 33." How old is Ana?
+A. 11
+B. 16
+C. 22
+D. 24
+Hint: x + 2x = 33 → Ben = 11, Ana = 22.
+Answer: C
+
+9. "John is 3 years older than Maria. Sum is 27." How old is Maria?
+A. 10
+B. 12
+C. 14
+D. 15
+Hint: x + (x+3) = 27 → x = 12.
+Answer: B
+
+10. "A number decreased by 9 is 16." Find the number.
+A. 7
+B. 15
+C. 25
+D. 27
+Hint: x - 9 = 16 → x = 25.
+Answer: C
+
+11. "Seven more than twice a number is 23." Find the number.
+A. 6
+B. 8
+C. 10
+D. 12
+Hint: 2x + 7 = 23 → x = 8.
+Answer: B
+
+12. "The perimeter of a rectangle is 30 cm. Length is 3 cm more than width." Find width.
+A. 4 cm
+B. 5 cm
+C. 6 cm
+D. 7 cm
+Hint: 2(x+3) + 2x = 30 → x = 6.
+Answer: C
+
+13. "The sum of three consecutive integers is 60." Find the middle integer.
+A. 18
+B. 19
+C. 20
+D. 21
+Hint: x + (x+1) + (x+2) = 60 → x = 19. Middle = 20.
+Answer: C
+
+14. A student solved "Five more than twice a number is 17" and answered 6. Is correct?
+A. Yes, because 2(6) + 5 = 17
+B. Yes, because 2(6) - 5 = 17
+C. No, correct answer is 4
+D. No, correct answer is 8
+Hint: Check: 2(6) + 5 = 17. Correct.
+Answer: A
+
+15. Create a real-life word problem solvable by x + (x+3) = 27.
+A. Ana is 3 years younger than Ben. Total age 27.
+B. Ana is 3 years older than Ben. Total age 27.
+C. Ana has 3 more apples than Ben. Ana has 27.
+D. Ana has 3 times as many apples as Ben. Total 27.
+Hint: x + (x+3) = one quantity + another that is 3 more.
+Answer: B

@@ -1,0 +1,774 @@
+[
+  {
+    "slug": "lesson-1-operations-on-integers",
+    "title": "Operations On Integers",
+    "description": "Grade 7 mathematics: operations on integers.",
+    "order_index": 1,
+    "prerequisite_lesson_slug": null,
+    "content_jsonb": [
+      {
+        "type": "heading",
+        "text": "Introduction to Integers"
+      },
+      {
+        "type": "paragraph",
+        "text": "Integers are the set of whole numbers and their opposites. They include positive numbers, negative numbers, and zero."
+      },
+      {
+        "type": "paragraph",
+        "text": "Set of Integers: { ..., -3, -2, -1, 0, 1, 2, 3, ... }"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Positive Integers: Numbers greater than zero (1, 2, 3, ...)"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Negative Integers: Numbers less than zero (-1, -2, -3, ...)"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Zero: Neither positive nor negative"
+      },
+      {
+        "type": "heading",
+        "text": "Absolute Value"
+      },
+      {
+        "type": "paragraph",
+        "text": "The absolute value of a number is its distance from zero on the number line. Distance is always positive or zero."
+      },
+      {
+        "type": "paragraph",
+        "text": "Symbol: |a|"
+      },
+      {
+        "type": "paragraph",
+        "text": "Rules:"
+      },
+      {
+        "type": "paragraph",
+        "text": "- |5| = 5"
+      },
+      {
+        "type": "paragraph",
+        "text": "- |-5| = 5"
+      },
+      {
+        "type": "paragraph",
+        "text": "- |0| = 0"
+      },
+      {
+        "type": "paragraph",
+        "text": "Key Concept: Absolute value is always non-negative."
+      },
+      {
+        "type": "heading",
+        "text": "Addition of Integers"
+      },
+      {
+        "type": "paragraph",
+        "text": "Rule 1: Same Signs"
+      },
+      {
+        "type": "paragraph",
+        "text": "Add the absolute values and keep the common sign."
+      },
+      {
+        "type": "example",
+        "text": "Examples:"
+      },
+      {
+        "type": "paragraph",
+        "text": "- (+5) + (+3) = +8"
+      },
+      {
+        "type": "paragraph",
+        "text": "- (-5) + (-3) = -8"
+      },
+      {
+        "type": "paragraph",
+        "text": "Rule 2: Different Signs"
+      },
+      {
+        "type": "paragraph",
+        "text": "Subtract the smaller absolute value from the larger absolute value. Keep the sign of the number with the larger absolute value."
+      },
+      {
+        "type": "example",
+        "text": "Examples:"
+      },
+      {
+        "type": "paragraph",
+        "text": "- (-8) + (+5) = -3"
+      },
+      {
+        "type": "paragraph",
+        "text": "- (+8) + (-5) = +3"
+      },
+      {
+        "type": "heading",
+        "text": "Subtraction of Integers"
+      },
+      {
+        "type": "paragraph",
+        "text": "Key Rule: To subtract an integer, add its opposite."
+      },
+      {
+        "type": "paragraph",
+        "text": "a - b = a + (-b)"
+      },
+      {
+        "type": "example",
+        "text": "Examples:"
+      },
+      {
+        "type": "paragraph",
+        "text": "- 7 - 4 = 3"
+      },
+      {
+        "type": "paragraph",
+        "text": "- 7 - (-4) = 11"
+      },
+      {
+        "type": "paragraph",
+        "text": "- -7 - 4 = -11"
+      },
+      {
+        "type": "paragraph",
+        "text": "- -7 - (-4) = -3"
+      },
+      {
+        "type": "paragraph",
+        "text": "Common Mistake: Students often forget to change the sign when subtracting a negative."
+      },
+      {
+        "type": "heading",
+        "text": "Multiplication of Integers"
+      },
+      {
+        "type": "paragraph",
+        "text": "Sign Pattern:"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Positive × Positive = Positive: (+3) × (+4) = +12"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Positive × Negative = Negative: (+3) × (-4) = -12"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Negative × Positive = Negative: (-3) × (+4) = -12"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Negative × Negative = Positive: (-3) × (-4) = +12"
+      },
+      {
+        "type": "paragraph",
+        "text": "Summary: Same signs → Positive product. Different signs → Negative product."
+      },
+      {
+        "type": "heading",
+        "text": "Division of Integers"
+      },
+      {
+        "type": "paragraph",
+        "text": "Sign Pattern:"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Positive ÷ Positive = Positive: (+12) ÷ (+4) = +3"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Positive ÷ Negative = Negative: (+12) ÷ (-4) = -3"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Negative ÷ Positive = Negative: (-12) ÷ (+4) = -3"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Negative ÷ Negative = Positive: (-12) ÷ (-4) = +3"
+      },
+      {
+        "type": "paragraph",
+        "text": "Summary: Same signs → Positive quotient. Different signs → Negative quotient."
+      },
+      {
+        "type": "heading",
+        "text": "Order of Operations with Integers (PEMDAS)"
+      },
+      {
+        "type": "paragraph",
+        "text": "1. Parentheses"
+      },
+      {
+        "type": "paragraph",
+        "text": "2. Exponents"
+      },
+      {
+        "type": "paragraph",
+        "text": "3. Multiplication and Division (left to right)"
+      },
+      {
+        "type": "paragraph",
+        "text": "4. Addition and Subtraction (left to right)"
+      },
+      {
+        "type": "example",
+        "text": "Example: 3 × (-2) + 8 ÷ (-4) = -6 + (-2) = -8"
+      }
+    ]
+  },
+  {
+    "slug": "lesson-2-operations-on-rational-numbers",
+    "title": "Operations On Rational Numbers",
+    "description": "Grade 7 mathematics: operations on rational numbers.",
+    "order_index": 2,
+    "prerequisite_lesson_slug": "lesson-1-operations-on-integers",
+    "content_jsonb": [
+      {
+        "type": "heading",
+        "text": "What are Rational Numbers?"
+      },
+      {
+        "type": "paragraph",
+        "text": "A rational number is any number that can be expressed as a fraction a/b where a and b are integers and b ≠ 0."
+      },
+      {
+        "type": "example",
+        "text": "Examples: 1/2, 3/4, -2/3, 0.25 (1/4), 0.333... (1/3)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Rational numbers include fractions, decimals (terminating and repeating), and integers."
+      },
+      {
+        "type": "heading",
+        "text": "Fractions: Definition and Parts"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Numerator: The top number (how many parts we have)"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Denominator: The bottom number (how many equal parts the whole is divided into)"
+      },
+      {
+        "type": "example",
+        "text": "Example: In 3/4, 3 is the numerator and 4 is the denominator."
+      },
+      {
+        "type": "heading",
+        "text": "Types of Fractions"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Proper Fraction: Numerator < Denominator (3/4)"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Improper Fraction: Numerator ≥ Denominator (5/4)"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Mixed Number: Whole number + proper fraction (1 ¼)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Converting Mixed to Improper: 1 ¾ = (1 × 4 + 3)/4 = 7/4"
+      },
+      {
+        "type": "heading",
+        "text": "Addition and Subtraction of Fractions"
+      },
+      {
+        "type": "paragraph",
+        "text": "Step 1: Find the Least Common Denominator (LCD)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Step 2: Convert fractions to equivalent fractions with the LCD"
+      },
+      {
+        "type": "paragraph",
+        "text": "Step 3: Add or subtract the numerators. Keep the denominator."
+      },
+      {
+        "type": "example",
+        "text": "Example 1 (Same Denominator): 3/8 + 2/8 = 5/8"
+      },
+      {
+        "type": "example",
+        "text": "Example 2 (Different Denominators): 2/3 + 1/4 = 8/12 + 3/12 = 11/12"
+      },
+      {
+        "type": "example",
+        "text": "Example 3 (Subtraction): 7/10 - 2/5 = 7/10 - 4/10 = 3/10"
+      },
+      {
+        "type": "heading",
+        "text": "Multiplication of Fractions"
+      },
+      {
+        "type": "paragraph",
+        "text": "Rule: Multiply the numerators. Multiply the denominators. Simplify if possible."
+      },
+      {
+        "type": "example",
+        "text": "Formula: a/b × c/d = (a×c)/(b×d)"
+      },
+      {
+        "type": "example",
+        "text": "Example 1: 2/3 × 4/5 = 8/15"
+      },
+      {
+        "type": "example",
+        "text": "Example 2 (With Negative): (-2/3) × (9/10) = -18/30 = -3/5"
+      },
+      {
+        "type": "example",
+        "text": "Example 3 (Mixed Numbers): 1 ½ × 2 ⅓ = 3/2 × 7/3 = 21/6 = 7/2 = 3 ½"
+      },
+      {
+        "type": "heading",
+        "text": "Division of Fractions"
+      },
+      {
+        "type": "paragraph",
+        "text": "Rule: To divide by a fraction, multiply by its reciprocal."
+      },
+      {
+        "type": "paragraph",
+        "text": "Reciprocal: Flip the numerator and denominator."
+      },
+      {
+        "type": "example",
+        "text": "Formula: a/b ÷ c/d = a/b × d/c"
+      },
+      {
+        "type": "example",
+        "text": "Example 1: 3/4 ÷ 2/5 = 3/4 × 5/2 = 15/8"
+      },
+      {
+        "type": "example",
+        "text": "Example 2: 5/8 ÷ 3/4 = 5/8 × 4/3 = 20/24 = 5/6"
+      },
+      {
+        "type": "heading",
+        "text": "Converting Between Fractions and Decimals"
+      },
+      {
+        "type": "paragraph",
+        "text": "Fraction to Decimal: Divide numerator by denominator."
+      },
+      {
+        "type": "paragraph",
+        "text": "- 1/2 = 0.5"
+      },
+      {
+        "type": "paragraph",
+        "text": "- 3/4 = 0.75"
+      },
+      {
+        "type": "paragraph",
+        "text": "Decimal to Fraction:"
+      },
+      {
+        "type": "paragraph",
+        "text": "- 0.5 = 5/10 = 1/2"
+      },
+      {
+        "type": "paragraph",
+        "text": "- 0.75 = 75/100 = 3/4"
+      },
+      {
+        "type": "paragraph",
+        "text": "Repeating Decimals:"
+      },
+      {
+        "type": "paragraph",
+        "text": "- 0.333... = 1/3"
+      },
+      {
+        "type": "paragraph",
+        "text": "- 0.666... = 2/3"
+      }
+    ]
+  },
+  {
+    "slug": "lesson-3-algebraic-expressions",
+    "title": "Algebraic Expressions",
+    "description": "Grade 7 mathematics: algebraic expressions.",
+    "order_index": 3,
+    "prerequisite_lesson_slug": "lesson-2-operations-on-rational-numbers",
+    "content_jsonb": [
+      {
+        "type": "heading",
+        "text": "What is an Algebraic Expression?"
+      },
+      {
+        "type": "paragraph",
+        "text": "An algebraic expression is a combination of numbers, variables, and operation symbols. It does NOT contain an equal sign."
+      },
+      {
+        "type": "example",
+        "text": "Examples: 3x + 2, 5a - 7b, 2x² + 4x - 1"
+      },
+      {
+        "type": "heading",
+        "text": "Parts of an Algebraic Expression"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Variable: A letter representing an unknown number (x)"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Coefficient: The number multiplied by the variable (3 in 3x²)"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Constant: A term without a variable (-5)"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Term: A part of an expression separated by + or -"
+      },
+      {
+        "type": "heading",
+        "text": "Translating Verbal Phrases to Algebraic Expressions"
+      },
+      {
+        "type": "paragraph",
+        "text": "- a number x increased by 5 → x + 5"
+      },
+      {
+        "type": "paragraph",
+        "text": "- a number x decreased by 3 → x - 3"
+      },
+      {
+        "type": "paragraph",
+        "text": "- twice a number x → 2x"
+      },
+      {
+        "type": "paragraph",
+        "text": "- half of a number x → x/2"
+      },
+      {
+        "type": "paragraph",
+        "text": "- three times a number x plus 4 → 3x + 4"
+      },
+      {
+        "type": "paragraph",
+        "text": "- five less than twice a number x → 2x - 5"
+      },
+      {
+        "type": "paragraph",
+        "text": "- a number x more than 8 → x + 8"
+      },
+      {
+        "type": "paragraph",
+        "text": "Common Mistakes:"
+      },
+      {
+        "type": "paragraph",
+        "text": "- \"Less than\" reverses order: \"5 less than x\" is x - 5, NOT 5 - x."
+      },
+      {
+        "type": "paragraph",
+        "text": "- \"More than\" adds: \"5 more than x\" is x + 5."
+      },
+      {
+        "type": "heading",
+        "text": "Evaluating Algebraic Expressions"
+      },
+      {
+        "type": "paragraph",
+        "text": "Substitute the given value(s) for the variable(s), then follow PEMDAS."
+      },
+      {
+        "type": "example",
+        "text": "Example 1: Evaluate 2x + 9 when x = 5 → 2(5) + 9 = 19"
+      },
+      {
+        "type": "example",
+        "text": "Example 2: Evaluate 3x² - 2x + 1 when x = 2 → 3(4) - 4 + 1 = 9"
+      },
+      {
+        "type": "example",
+        "text": "Example 3: Evaluate 14 - 5x when x = 2 → 14 - 10 = 4"
+      },
+      {
+        "type": "heading",
+        "text": "Simplifying Algebraic Expressions (Combining Like Terms)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Like terms = same variable raised to same power."
+      },
+      {
+        "type": "paragraph",
+        "text": "- 3x and 5x are like terms."
+      },
+      {
+        "type": "paragraph",
+        "text": "- 2x² and 4x² are like terms."
+      },
+      {
+        "type": "paragraph",
+        "text": "- 3x and 3x² are NOT like terms."
+      },
+      {
+        "type": "example",
+        "text": "Example 1: 3x + 5x = 8x"
+      },
+      {
+        "type": "example",
+        "text": "Example 2: 7x² + 3x - 2x² - x = 5x² + 2x"
+      },
+      {
+        "type": "example",
+        "text": "Example 3: x² + 3x - 8x - 3x² = -2x² - 5x"
+      },
+      {
+        "type": "heading",
+        "text": "Multiplying Binomials (FOIL Method)"
+      },
+      {
+        "type": "paragraph",
+        "text": "FOIL = First, Outer, Inner, Last"
+      },
+      {
+        "type": "example",
+        "text": "Example: (x - 3)(x - 2)"
+      },
+      {
+        "type": "paragraph",
+        "text": "- F: x × x = x²"
+      },
+      {
+        "type": "paragraph",
+        "text": "- O: x × (-2) = -2x"
+      },
+      {
+        "type": "paragraph",
+        "text": "- I: (-3) × x = -3x"
+      },
+      {
+        "type": "paragraph",
+        "text": "- L: (-3) × (-2) = +6"
+      },
+      {
+        "type": "paragraph",
+        "text": "- Sum: x² - 2x - 3x + 6 = x² - 5x + 6"
+      }
+    ]
+  },
+  {
+    "slug": "lesson-4-word-problems",
+    "title": "Word Problems",
+    "description": "Grade 7 mathematics: word problems.",
+    "order_index": 4,
+    "prerequisite_lesson_slug": "lesson-3-algebraic-expressions",
+    "content_jsonb": [
+      {
+        "type": "heading",
+        "text": "Key Words and Their Mathematical Symbols"
+      },
+      {
+        "type": "paragraph",
+        "text": "- sum, added to, more than, increased by → +"
+      },
+      {
+        "type": "paragraph",
+        "text": "- difference, subtracted from, less than, decreased by → -"
+      },
+      {
+        "type": "paragraph",
+        "text": "- product, times, multiplied by, twice → ×"
+      },
+      {
+        "type": "paragraph",
+        "text": "- quotient, divided by, ratio → ÷"
+      },
+      {
+        "type": "paragraph",
+        "text": "- is, equals, was, became → ="
+      },
+      {
+        "type": "heading",
+        "text": "Translating Word Problems into Equations"
+      },
+      {
+        "type": "paragraph",
+        "text": "Step 1: Read the problem carefully."
+      },
+      {
+        "type": "paragraph",
+        "text": "Step 2: Identify the unknown and assign a variable (usually x)."
+      },
+      {
+        "type": "paragraph",
+        "text": "Step 3: Translate the words into a mathematical equation."
+      },
+      {
+        "type": "paragraph",
+        "text": "Step 4: Solve the equation."
+      },
+      {
+        "type": "paragraph",
+        "text": "Step 5: Check your answer."
+      },
+      {
+        "type": "heading",
+        "text": "Common Types of Word Problems"
+      },
+      {
+        "type": "paragraph",
+        "text": "Type 1: One-Step Problems"
+      },
+      {
+        "type": "example",
+        "text": "Example: \"Six more than a number x is 3.\""
+      },
+      {
+        "type": "paragraph",
+        "text": "Translation: x + 6 = 3"
+      },
+      {
+        "type": "paragraph",
+        "text": "Solution: x = -3"
+      },
+      {
+        "type": "paragraph",
+        "text": "Type 2: Age Problems"
+      },
+      {
+        "type": "example",
+        "text": "Example: \"Jeff is 10 years old and his brother is 2 years old. In how many years will Jeff be twice as old?\""
+      },
+      {
+        "type": "paragraph",
+        "text": "Let x = number of years"
+      },
+      {
+        "type": "paragraph",
+        "text": "Jeff's age: 10 + x"
+      },
+      {
+        "type": "paragraph",
+        "text": "Brother's age: 2 + x"
+      },
+      {
+        "type": "paragraph",
+        "text": "Equation: 10 + x = 2(2 + x)"
+      },
+      {
+        "type": "paragraph",
+        "text": "Solution: x = 6"
+      },
+      {
+        "type": "paragraph",
+        "text": "Type 3: Number Problems"
+      },
+      {
+        "type": "example",
+        "text": "Example: \"The larger of two numbers is 4 more than the smaller. Sum is 136.\""
+      },
+      {
+        "type": "paragraph",
+        "text": "Let x = smaller number"
+      },
+      {
+        "type": "paragraph",
+        "text": "Larger = x + 4"
+      },
+      {
+        "type": "paragraph",
+        "text": "Equation: x + (x + 4) = 136"
+      },
+      {
+        "type": "paragraph",
+        "text": "Solution: x = 66"
+      },
+      {
+        "type": "paragraph",
+        "text": "Type 4: Consecutive Integers"
+      },
+      {
+        "type": "example",
+        "text": "Example: \"Sum of four consecutive integers is 86.\""
+      },
+      {
+        "type": "paragraph",
+        "text": "x + (x+1) + (x+2) + (x+3) = 86"
+      },
+      {
+        "type": "paragraph",
+        "text": "Solution: x = 20"
+      },
+      {
+        "type": "paragraph",
+        "text": "Note: Consecutive even integers differ by 2."
+      },
+      {
+        "type": "heading",
+        "text": "Steps for Solving Word Problems"
+      },
+      {
+        "type": "paragraph",
+        "text": "1. Read and underline important information"
+      },
+      {
+        "type": "paragraph",
+        "text": "2. Identify unknown and assign variable"
+      },
+      {
+        "type": "paragraph",
+        "text": "3. Write the equation"
+      },
+      {
+        "type": "paragraph",
+        "text": "4. Solve"
+      },
+      {
+        "type": "paragraph",
+        "text": "5. Check if answer makes sense"
+      },
+      {
+        "type": "paragraph",
+        "text": "6. Write final answer in complete sentence"
+      },
+      {
+        "type": "heading",
+        "text": "Common Mistakes to Avoid"
+      },
+      {
+        "type": "paragraph",
+        "text": "1. Misreading operation — \"less than\" reverses order"
+      },
+      {
+        "type": "paragraph",
+        "text": "2. Forgetting to combine like terms"
+      },
+      {
+        "type": "paragraph",
+        "text": "3. Mixing up variables"
+      },
+      {
+        "type": "paragraph",
+        "text": "4. Not checking the answer"
+      },
+      {
+        "type": "paragraph",
+        "text": "5. Ignoring units"
+      }
+    ]
+  }
+]

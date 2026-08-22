@@ -1,0 +1,1 @@
+"""Curriculum management command package."""

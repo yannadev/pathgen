@@ -1,0 +1,18 @@
+[
+  {
+    "key": "activity-1-operations-on-integers-and-rational-numbers",
+    "title": "Operations On Integers & Rational Numbers",
+    "description": "Mixed practice covering Operations On Integers and Operations On Rational Numbers.",
+    "order_index": 1,
+    "lesson_1_slug": "lesson-1-operations-on-integers",
+    "lesson_2_slug": "lesson-2-operations-on-rational-numbers"
+  },
+  {
+    "key": "activity-2-algebraic-expressions-and-word-problems",
+    "title": "Algebraic Expressions & Word Problems",
+    "description": "Mixed practice covering Algebraic Expressions and Word Problems.",
+    "order_index": 2,
+    "lesson_1_slug": "lesson-3-algebraic-expressions",
+    "lesson_2_slug": "lesson-4-word-problems"
+  }
+]

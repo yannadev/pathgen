@@ -1,0 +1,491 @@
+ACTIVITY 1: OPERATIONS ON INTEGERS & RATIONAL NUMBERS
+
+Covers: Lesson 1 (Integers) + Lesson 2 (Rational Numbers)
+
+QUESTIONS:
+
+1. What is the absolute value of -25?
+A. -25
+B. 0
+C. 25
+D. 50
+Hint: Absolute value is the distance from zero. Distance is always positive.
+Answer: C
+
+2. What is the sum of 34 and (-56)?
+A. -90
+B. -22
+C. 22
+D. 90
+Hint: Different signs — subtract 34 from 56. Answer takes the sign of the larger absolute value.
+Answer: B
+
+3. What is the result when (-68) is subtracted from 45?
+A. -113
+B. -23
+C. 23
+D. 113
+Hint: 45 - (-68) = 45 + 68.
+Answer: D
+
+4. What is the quotient of (-288) divided by 16?
+A. -18
+B. -19
+C. 18
+D. 19
+Hint: Negative ÷ positive = negative. 288 ÷ 16 = 18.
+Answer: A
+
+5. Evaluate: (-15) × 8
+A. -120
+B. -23
+C. 120
+D. 23
+Hint: Negative × positive = negative. 15 × 8 = 120.
+Answer: A
+
+6. Evaluate: (-12) × (-11)
+A. -132
+B. -23
+C. 23
+D. 132
+Hint: Negative × negative = positive. 12 × 11 = 132.
+Answer: D
+
+7. Solve: 26 - (-14) = ?
+A. -40
+B. -12
+C. 12
+D. 40
+Hint: Subtracting a negative = adding its opposite: 26 + 14.
+Answer: D
+
+8. Solve: -18 - 7 = ?
+A. -25
+B. -11
+C. 11
+D. 25
+Hint: -18 - 7 = -18 + (-7). Add negatives.
+Answer: A
+
+9. What is the product of (-8) × (-5) × 3?
+A. -120
+B. -40
+C. 40
+D. 120
+Hint: (-8) × (-5) = 40. Then 40 × 3 = 120.
+Answer: D
+
+10. Simplify: 24 ÷ (-6) + 5
+A. -9
+B. -1
+C. 1
+D. 9
+Hint: Division first: 24 ÷ (-6) = -4. Then -4 + 5 = 1.
+Answer: C
+
+11. Simplify: -7 × 5 + (-12) ÷ 4
+A. -41
+B. -38
+C. 38
+D. 41
+Hint: -7 × 5 = -35. -12 ÷ 4 = -3. Add: -35 + (-3) = -38.
+Answer: B
+
+12. If a = -9 and b = -4, what is a - b?
+A. -13
+B. -5
+C. 5
+D. 13
+Hint: -9 - (-4) = -9 + 4 = -5.
+Answer: B
+
+13. If x = -6 and y = -3, what is x × y + 10?
+A. -28
+B. -8
+C. 8
+D. 28
+Hint: (-6) × (-3) = 18. 18 + 10 = 28.
+Answer: D
+
+14. Simplify: (-10 + 6) × (-4)
+A. -64
+B. -16
+C. 16
+D. 64
+Hint: Parentheses first: -10 + 6 = -4. Then (-4) × (-4) = 16.
+Answer: C
+
+15. A student claims that (-9) × (-6) = -54. Is the student correct?
+A. Yes, because multiplying two negative numbers gives a negative product
+B. Yes, because 9 × 6 = 54 and you keep the negative sign
+C. No, because multiplying two negative numbers gives a positive product
+D. No, because the answer should be 45
+Hint: Two negatives multiplied = positive. 9 × 6 = 54, so +54.
+Answer: C
+
+16. What is 5/12 + 7/12 in simplest form?
+A. 1/4
+B. 1/3
+C. 1/2
+D. 1
+Hint: Same denominator: 5 + 7 = 12. 12/12 = 1.
+Answer: D
+
+17. Simplify: 7/10 - 3/5
+A. 1/10
+B. 1/5
+C. 2/5
+D. 1/2
+Hint: LCD = 10. 3/5 = 6/10. 7/10 - 6/10 = 1/10.
+Answer: A
+
+18. What is the product of 5/8 and 4/15?
+A. 1/6
+B. 1/4
+C. 1/3
+D. 1/2
+Hint: (5×4)/(8×15) = 20/120 = 1/6.
+Answer: A
+
+19. Divide: 9/10 ÷ 3/5
+A. 1/3
+B. 1/2
+C. 3/2
+D. 2/3
+Hint: Multiply by reciprocal: 9/10 × 5/3 = 45/30 = 3/2.
+Answer: C
+
+20. Express 0.625 as a fraction in simplest form.
+A. 5/8
+B. 3/4
+C. 25/40
+D. 625/100
+Hint: 625/1000 = 5/8.
+Answer: A
+
+21. Express 3/8 as a decimal.
+A. 0.25
+B. 0.35
+C. 0.375
+D. 0.75
+Hint: 3 ÷ 8 = 0.375.
+Answer: C
+
+22. Convert 4 ⅔ to an improper fraction.
+A. 10/3
+B. 12/3
+C. 14/3
+D. 16/3
+Hint: (4 × 3 + 2)/3 = 14/3.
+Answer: C
+
+23. What is -3/7 × 14/15?
+A. -2/5
+B. -1/5
+C. 2/5
+D. 1/5
+Hint: (-3×14)/(7×15) = -42/105 = -2/5.
+Answer: A
+
+24. What is -5/8 ÷ 15/16?
+A. -2/3
+B. -1/3
+C. 2/3
+D. 1/3
+Hint: -5/8 × 16/15 = -80/120 = -2/3.
+Answer: A
+
+25. Add: 3 ½ + 2 ⅓
+A. 5 5/6
+B. 5 ½
+C. 5 ⅔
+D. 6 ⅓
+Hint: 7/2 + 7/3 = 21/6 + 14/6 = 35/6 = 5 5/6.
+Answer: A
+
+26. Subtract: 4 ¼ - 1 ½
+A. 2 ¼
+B. 2 ½
+C. 2 ¾
+D. 3 ¼
+Hint: 17/4 - 6/4 = 11/4 = 2 ¾.
+Answer: C
+
+27. Multiply: 2 ½ × 1 3/5
+A. 3
+B. 4
+C. 5
+D. 6
+Hint: 5/2 × 8/5 = 40/10 = 4.
+Answer: B
+
+28. Which is the correct arrangement from least to greatest? 0.8, 3/4, 0.6, 4/5
+A. 0.6, 3/4, 0.8, 4/5
+B. 0.6, 3/4, 4/5, 0.8
+C. 3/4, 0.6, 0.8, 4/5
+D. 4/5, 0.8, 3/4, 0.6
+Hint: Convert to decimals: 3/4 = 0.75, 4/5 = 0.8.
+Answer: B
+
+29. A student claims that 3/4 ÷ 1/2 = 3/8. Is the student correct?
+A. Yes
+B. Yes, because 3/4 × 1/2 = 3/8
+C. No, because the correct answer is 3/2
+D. No, because the correct answer is 1/8
+Hint: 3/4 ÷ 1/2 = 3/4 × 2/1 = 6/4 = 3/2.
+Answer: C
+
+30. Create a real-life situation solvable by multiplying 2/3 and 3/4.
+A. Sharing 2/3 of a pizza among 3/4 of a class
+B. Finding 3/4 of a 2/3 cup of sugar
+C. Dividing 2/3 meter of ribbon into 3/4 meter pieces
+D. Adding 2/3 and 3/4 of a liter of water
+Hint: Multiplying fractions = finding a fraction of a fraction.
+Answer: B
+
+ACTIVITY 2: ALGEBRAIC EXPRESSIONS & WORD PROBLEMS
+
+Covers: Lesson 3 (Algebraic Expressions) + Lesson 4 (Word Problems)
+
+QUESTIONS:
+
+1. What is the coefficient of x in the expression 7x - 3?
+A. -3
+B. 3
+C. 7
+D. x
+Hint: Coefficient is the number multiplied by the variable.
+Answer: C
+
+2. How many terms are there in the expression 4x² + 3x - 7?
+A. 1
+B. 2
+C. 3
+D. 4
+Hint: Terms are separated by + and - signs.
+Answer: C
+
+3. Evaluate 5x - 3 when x = 4.
+A. 17
+B. 20
+C. 23
+D. 27
+Hint: 5(4) - 3 = 20 - 3 = 17.
+Answer: A
+
+4. Evaluate 2x² + 3x - 1 when x = 3.
+A. 20
+B. 26
+C. 29
+D. 32
+Hint: 2(9) + 9 - 1 = 26.
+Answer: B
+
+5. Simplify: 6x + 3x
+A. 3x
+B. 6x
+C. 9x
+D. 18x
+Hint: Add coefficients: 6 + 3 = 9.
+Answer: C
+
+6. Simplify: 8y - 2y + 5
+A. 6y + 5
+B. 6y - 5
+C. 10y + 5
+D. 10y - 5
+Hint: 8y - 2y = 6y. Constant stays.
+Answer: A
+
+7. Simplify: 4a + 3b - 2a + 7b
+A. 2a + 10b
+B. 2a - 4b
+C. 6a + 10b
+D. 6a + 4b
+Hint: 4a - 2a = 2a, 3b + 7b = 10b.
+Answer: A
+
+8. Simplify: 3x² + 5x - x² - 2x
+A. 2x² + 3x
+B. 4x² + 3x
+C. 2x² + 7x
+D. 4x² + 7x
+Hint: 3x² - x² = 2x², 5x - 2x = 3x.
+Answer: A
+
+9. Translate: "Twice a number x decreased by 7"
+A. 2x - 7
+B. 2x + 7
+C. 7 - 2x
+D. 2(x - 7)
+Hint: Twice = 2x. Decreased by = -7.
+Answer: A
+
+10. Translate: "Five more than a number x"
+A. 5x
+B. x + 5
+C. x - 5
+D. 5 - x
+Hint: More than = add to the number.
+Answer: B
+
+11. Translate: "The sum of twice a number x and 3"
+A. 2x + 3
+B. 2(x + 3)
+C. 3x + 2
+D. 2x - 3
+Hint: Twice x = 2x. Sum with 3 = +3.
+Answer: A
+
+12. Multiply using FOIL: (x + 4)(x + 2)
+A. x² + 6x + 8
+B. x² + 8x + 6
+C. x² + 6x + 6
+D. x² + 8x + 8
+Hint: FOIL → x² + 2x + 4x + 8 = x² + 6x + 8.
+Answer: A
+
+13. Multiply using FOIL: (x - 5)(x + 3)
+A. x² - 2x - 15
+B. x² - 8x - 15
+C. x² + 2x - 15
+D. x² + 8x - 15
+Hint: FOIL → x² + 3x - 5x - 15 = x² - 2x - 15.
+Answer: A
+
+14. Multiply using FOIL: (2x + 3)(x - 4)
+A. 2x² - 5x - 12
+B. 2x² - 11x - 12
+C. 2x² + 5x - 12
+D. 2x² + 11x - 12
+Hint: FOIL → 2x² - 8x + 3x - 12 = 2x² - 5x - 12.
+Answer: A
+
+15. A student simplified 3x + 2x as 5x². Is the student correct?
+A. Yes, because you add coefficients and exponents
+B. Yes, because x + x = x²
+C. No, because 3x + 2x = 5x
+D. No, because 3x + 2x = 6x
+Hint: Like terms — add coefficients, keep variable.
+Answer: C
+
+16. Translate: "Six less than a number x is 4."
+A. x - 6 = 4
+B. 6 - x = 4
+C. x + 6 = 4
+D. 6x = 4
+Hint: Less than reverses order. Six less than x = x - 6.
+Answer: A
+
+17. Translate: "The sum of a number x and 7 is 15."
+A. x + 7 = 15
+B. 7x = 15
+C. x - 7 = 15
+D. 7 - x = 15
+Hint: Sum of x and 7 = x + 7.
+Answer: A
+
+18. "Three times a number x increased by 5 is 20." Find x.
+A. 3
+B. 4
+C. 5
+D. 6
+Hint: 3x + 5 = 20 → x = 5.
+Answer: C
+
+19. "The sum of two consecutive integers is 57." Find the smaller.
+A. 27
+B. 28
+C. 29
+D. 30
+Hint: x + (x+1) = 57 → x = 28.
+Answer: B
+
+20. "The sum of two consecutive even integers is 42." Find the larger.
+A. 20
+B. 21
+C. 22
+D. 24
+Hint: x + (x+2) = 42 → x = 20. Larger = 22.
+Answer: C
+
+21. "The larger of two numbers is 5 more than the smaller. Sum is 45." Find smaller.
+A. 20
+B. 25
+C. 30
+D. 35
+Hint: x + (x+5) = 45 → x = 20.
+Answer: A
+
+22. "Ana is twice as old as Ben. Sum is 33." How old is Ana?
+A. 11
+B. 16
+C. 22
+D. 24
+Hint: x + 2x = 33 → Ben = 11, Ana = 22.
+Answer: C
+
+23. "John is 3 years older than Maria. Sum is 27." How old is Maria?
+A. 10
+B. 12
+C. 14
+D. 15
+Hint: x + (x+3) = 27 → x = 12.
+Answer: B
+
+24. "A number decreased by 9 is 16." Find the number.
+A. 7
+B. 15
+C. 25
+D. 27
+Hint: x - 9 = 16 → x = 25.
+Answer: C
+
+25. "Seven more than twice a number is 23." Find the number.
+A. 6
+B. 8
+C. 10
+D. 12
+Hint: 2x + 7 = 23 → x = 8.
+Answer: B
+
+26. "Rectangle perimeter is 30 cm. Length is 3 cm more than width." Find width.
+A. 4 cm
+B. 5 cm
+C. 6 cm
+D. 7 cm
+Hint: 2(x+3) + 2x = 30 → x = 6.
+Answer: C
+
+27. "The sum of three consecutive integers is 60." Find the middle.
+A. 18
+B. 19
+C. 20
+D. 21
+Hint: x + (x+1) + (x+2) = 60 → x = 19. Middle = 20.
+Answer: C
+
+28. "A number divided by 4 is 9." Find the number.
+A. 13
+B. 16
+C. 27
+D. 36
+Hint: x/4 = 9 → x = 36.
+Answer: D
+
+29. A student solved "Five more than twice a number is 17" and answered 6. Is correct?
+A. Yes, because 2(6) + 5 = 17
+B. Yes, because 2(6) - 5 = 17
+C. No, correct answer is 4
+D. No, correct answer is 8
+Hint: 2(6) + 5 = 17. Correct.
+Answer: A
+
+30. Create a real-life word problem solvable by x + (x+3) = 27.
+A. Ana is 3 years younger than Ben. Total age 27.
+B. Ana is 3 years older than Ben. Total age 27.
+C. Ana has 3 more apples than Ben. Ana has 27.
+D. Ana has 3 times as many apples as Ben. Total 27.
+Hint: x + (x+3) = one quantity plus another 3 more.
+Answer: B
