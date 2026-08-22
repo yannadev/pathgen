@@ -1,0 +1,31 @@
+{% extends "student_base.html" %}
+
+{% block title %}Completion | Pathgen{% endblock %}
+{% block page_heading %}Learning completion{% endblock %}
+
+{% block page_content %}
+<div class="mx-auto max-w-4xl">
+    <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm shadow-slate-200/50 md:p-8 dark:border-slate-800 dark:bg-slate-900 dark:shadow-none" aria-labelledby="completion-heading">
+        <div class="grid size-12 place-items-center rounded-xl bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-200">
+            <i class="iconsax text-2xl" icon-name="award" aria-hidden="true"></i>
+        </div>
+        <h2 id="completion-heading" class="mt-5 text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">Learning path complete</h2>
+        <p class="mt-3 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300">Your baseline and final assessment scores are recorded below. Thank you for completing the Pathgen learning path.</p>
+
+        <div class="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div class="rounded-xl bg-slate-100 p-5 dark:bg-slate-800">
+                <p class="text-sm font-medium text-slate-600 dark:text-slate-300">Pretest score</p>
+                <p class="mt-2 font-mono text-3xl font-semibold tabular-nums text-slate-950 dark:text-white">{{ pretest_session.score|floatformat:0 }}%</p>
+            </div>
+            <div class="rounded-xl bg-slate-100 p-5 dark:bg-slate-800">
+                <p class="text-sm font-medium text-slate-600 dark:text-slate-300">Posttest score</p>
+                <p class="mt-2 font-mono text-3xl font-semibold tabular-nums text-slate-950 dark:text-white">{{ posttest_session.score|floatformat:0 }}%</p>
+            </div>
+            <div class="rounded-xl p-5 {% if learning_gain >= 0 %}bg-emerald-50 dark:bg-emerald-950/30{% else %}bg-amber-50 dark:bg-amber-950/30{% endif %}">
+                <p class="text-sm font-medium {% if learning_gain >= 0 %}text-emerald-800 dark:text-emerald-200{% else %}text-amber-800 dark:text-amber-200{% endif %}">Learning gain</p>
+                <p class="mt-2 font-mono text-3xl font-semibold tabular-nums text-slate-950 dark:text-white">{% if learning_gain > 0 %}+{% endif %}{{ learning_gain|floatformat:0 }} <span class="text-base font-medium">points</span></p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

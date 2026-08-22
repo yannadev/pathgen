@@ -18,4 +18,17 @@ urlpatterns = [
         views.pretest_result,
         name="pretest_result",
     ),
+    path("posttest/start/", views.posttest_start, name="posttest_start"),
+    path("posttest/<uuid:session_id>/", views.posttest, name="posttest"),
+    path(
+        "posttest/<uuid:session_id>/submit/",
+        views.posttest_submit,
+        name="posttest_submit",
+    ),
+    path(
+        "posttest/<uuid:session_id>/result/",
+        views.posttest_result,
+        name="posttest_result",
+    ),
+    path("completion/", views.completion, name="completion"),
 ]

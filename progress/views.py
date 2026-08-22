@@ -94,7 +94,8 @@ def lesson_path(request):
                 and second_status.status == LessonProgress.Status.PASSED
             )
             moved_beyond_pair = (
-                progress.status == progress.Status.COMPLETED
+                progress.status
+                in (progress.Status.COMPLETED, progress.Status.POSTTEST_TAKEN)
                 or (
                     progress.current_lesson is not None
                     and progress.current_lesson.order_index > activity.lesson_2.order_index
@@ -125,6 +126,24 @@ def lesson_path(request):
         )
 
     completed_count = sum(item["state"] == "passed" for item in path_items)
+    completed_posttest = (
+        AssessmentSession.objects.filter(
+            student=request.user,
+            type=AssessmentType.POSTTEST,
+            completed_at__isnull=False,
+        )
+        .order_by("-completed_at")
+        .first()
+    )
+    active_posttest = (
+        AssessmentSession.objects.filter(
+            student=request.user,
+            type=AssessmentType.POSTTEST,
+            completed_at__isnull=True,
+        )
+        .order_by("started_at")
+        .first()
+    )
     return render(
         request,
         "progress/lesson_path.html",
@@ -133,5 +152,7 @@ def lesson_path(request):
             "completed_count": completed_count,
             "total_lessons": len(path_items),
             "all_lessons_completed": bool(path_items) and completed_count == len(path_items),
+            "completed_posttest": completed_posttest,
+            "active_posttest": active_posttest,
         },
     )

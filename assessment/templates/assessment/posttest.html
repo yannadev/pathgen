@@ -1,8 +1,8 @@
 {% extends "student_base.html" %}
 {% load static %}
 
-{% block title %}Pretest | Pathgen{% endblock %}
-{% block page_heading %}Pretest{% endblock %}
+{% block title %}Posttest | Pathgen{% endblock %}
+{% block page_heading %}Posttest{% endblock %}
 
 {% block extra_head %}
     <meta name="robots" content="noindex,nofollow">
@@ -15,7 +15,7 @@
             Select one answer for each question. Unanswered questions count as incorrect.
         </div>
 
-        <form id="pretest-form" method="post" action="{% url 'assessment:pretest_submit' assessment_session.id %}" data-assessment-form>
+        <form id="posttest-form" method="post" action="{% url 'assessment:posttest_submit' assessment_session.id %}" data-assessment-form>
             {% csrf_token %}
             <input type="hidden" name="timed_out" value="0" data-timed-out>
             <div class="space-y-5">
@@ -43,7 +43,7 @@
             </div>
 
             <div class="mt-6 flex justify-end">
-                <button type="button" class="min-h-11 whitespace-nowrap rounded-xl bg-cyan-700 px-6 text-sm font-semibold text-white hover:bg-cyan-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/25 active:translate-y-px dark:bg-cyan-400 dark:text-cyan-950 dark:hover:bg-cyan-300" data-dialog-open="pretest-submit-dialog">Review and submit</button>
+                <button type="button" class="min-h-11 whitespace-nowrap rounded-xl bg-cyan-700 px-6 text-sm font-semibold text-white hover:bg-cyan-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/25 active:translate-y-px dark:bg-cyan-400 dark:text-cyan-950 dark:hover:bg-cyan-300" data-dialog-open="posttest-submit-dialog">Review and submit</button>
             </div>
         </form>
     </div>
@@ -61,8 +61,8 @@
     </aside>
 </div>
 
-{% include "components/modals/pretest_submit_confirm.html" %}
-{% include "components/modals/time_warning.html" with assessment_label="pretest" %}
+{% include "components/modals/posttest_submit_confirm.html" %}
+{% include "components/modals/time_warning.html" with assessment_label="posttest" %}
 {% endblock %}
 
 {% block extra_scripts %}

@@ -27,12 +27,26 @@ def pretest_questions():
     )
 
 
-def validate_pretest_bank(questions):
+def posttest_questions():
+    """Return the exact same bank and ordering used by the pretest."""
+    return pretest_questions()
+
+
+def validate_assessment_bank(questions, *, assessment_name):
     if len(questions) != PRETEST_QUESTION_COUNT:
         raise AssessmentConfigurationError(
-            f"The pretest requires exactly {PRETEST_QUESTION_COUNT} questions; "
+            f"The {assessment_name} requires exactly {PRETEST_QUESTION_COUNT} questions; "
             f"found {len(questions)}."
         )
+
+
+def validate_pretest_bank(questions):
+    """Backwards-compatible pretest-specific validation entry point."""
+    validate_assessment_bank(questions, assessment_name="pretest")
+
+
+def validate_posttest_bank(questions):
+    validate_assessment_bank(questions, assessment_name="posttest")
 
 
 def _bkt_parameters():
@@ -48,31 +62,38 @@ def _bkt_parameters():
         ) from error
 
 
-@transaction.atomic
-def complete_pretest(session_id, answers, *, completed_at=None):
-    """Grade and persist a pretest exactly once.
+def _complete_assessment(
+    session_id,
+    answers,
+    *,
+    assessment_type,
+    assessment_name,
+    initialize_bkt,
+    completed_at=None,
+):
+    """Grade a session exactly once against the shared assessment bank.
 
-    Returns ``(session, completed_now)``. A repeated submission returns the
-    already-completed session without changing responses, mastery, or progress.
+    The pretest path initializes mastery and starts learning. The posttest path
+    only persists its research outcome and marks progress as posttest_taken.
     """
     session = AssessmentSession.objects.select_for_update().get(pk=session_id)
-    if session.type != AssessmentType.PRETEST:
-        raise ValueError("complete_pretest requires a pretest session")
+    if session.type != assessment_type:
+        raise ValueError(f"Assessment session is not a {assessment_name}")
     if session.completed_at is not None:
         return session, False
 
     questions = list(pretest_questions())
-    validate_pretest_bank(questions)
+    validate_assessment_bank(questions, assessment_name=assessment_name)
     if session.total_questions != len(questions):
         raise AssessmentConfigurationError(
-            "The pretest bank changed after this assessment session started."
+            f"The {assessment_name} bank changed after this assessment session started."
         )
 
     question_ids = {question.id for question in questions}
     if not set(answers).issubset(question_ids):
-        raise ValueError("answers contain a question outside the pretest bank")
+        raise ValueError(f"answers contain a question outside the {assessment_name} bank")
 
-    parameters = _bkt_parameters()
+    parameters = _bkt_parameters() if initialize_bkt else None
     correct_by_lesson = Counter()
     responses = []
     correct_count = 0
@@ -105,27 +126,59 @@ def complete_pretest(session_id, answers, *, completed_at=None):
     session.completed_at = max(finished_at, session.started_at)
     session.save(update_fields=["score", "completed_at"])
 
-    question_totals = Counter(question.lesson_id for question in questions)
-    lessons = list(Lesson.objects.order_by("order_index"))
-    for lesson in lessons:
-        mastery = init_mastery(
-            correct_by_lesson[lesson.id],
-            question_totals[lesson.id],
-            float(parameters.p_guess),
-        )
-        BKTMastery.objects.update_or_create(
-            student=session.student,
-            lesson=lesson,
-            defaults={"p_known": Decimal(f"{mastery:.4f}")},
-        )
+    if initialize_bkt:
+        question_totals = Counter(question.lesson_id for question in questions)
+        lessons = list(Lesson.objects.order_by("order_index"))
+        for lesson in lessons:
+            mastery = init_mastery(
+                correct_by_lesson[lesson.id],
+                question_totals[lesson.id],
+                float(parameters.p_guess),
+            )
+            BKTMastery.objects.update_or_create(
+                student=session.student,
+                lesson=lesson,
+                defaults={"p_known": Decimal(f"{mastery:.4f}")},
+            )
 
-    first_lesson = lessons[0] if lessons else None
-    StudentProgress.objects.update_or_create(
-        student=session.student,
-        defaults={
-            "current_lesson": first_lesson,
-            "status": StudentProgress.Status.IN_PROGRESS,
-            "last_activity_at": session.completed_at,
-        },
-    )
+        first_lesson = lessons[0] if lessons else None
+        StudentProgress.objects.update_or_create(
+            student=session.student,
+            defaults={
+                "current_lesson": first_lesson,
+                "status": StudentProgress.Status.IN_PROGRESS,
+                "last_activity_at": session.completed_at,
+            },
+        )
+    else:
+        StudentProgress.objects.filter(student=session.student).update(
+            status=StudentProgress.Status.POSTTEST_TAKEN,
+            last_activity_at=session.completed_at,
+        )
     return session, True
+
+
+@transaction.atomic
+def complete_pretest(session_id, answers, *, completed_at=None):
+    """Grade and persist a pretest, including initial BKT and path state."""
+    return _complete_assessment(
+        session_id,
+        answers,
+        assessment_type=AssessmentType.PRETEST,
+        assessment_name="pretest",
+        initialize_bkt=True,
+        completed_at=completed_at,
+    )
+
+
+@transaction.atomic
+def complete_posttest(session_id, answers, *, completed_at=None):
+    """Grade and persist a posttest without changing BKT estimates."""
+    return _complete_assessment(
+        session_id,
+        answers,
+        assessment_type=AssessmentType.POSTTEST,
+        assessment_name="posttest",
+        initialize_bkt=False,
+        completed_at=completed_at,
+    )

@@ -115,6 +115,46 @@ class StudentLearningPathTests(TestCase):
         self.assertEqual(activity_item["activity_state"], "current")
         self.assertContains(response, "Start activity")
 
+    def test_learning_path_offers_posttest_after_every_lesson_is_passed(self):
+        progress = self._complete_pretest_and_start_path()
+        now = timezone.now()
+        for lesson in self.lessons:
+            LessonProgress.objects.create(
+                student=self.student,
+                lesson=lesson,
+                status=LessonProgress.Status.PASSED,
+                first_started_at=now,
+                last_activity_at=now,
+            )
+        progress.current_lesson = None
+        progress.status = StudentProgress.Status.COMPLETED
+        progress.save(update_fields=["current_lesson", "status"])
+
+        response = self.client.get(reverse("progress:lesson_path"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Posttest unlocked")
+        self.assertContains(response, "Start posttest")
+        self.assertContains(response, "posttest-start-dialog")
+
+    def test_learning_path_surfaces_an_admin_overridden_active_posttest(self):
+        self._complete_pretest_and_start_path()
+        now = timezone.now()
+        AssessmentSession.objects.create(
+            student=self.student,
+            type=AssessmentType.POSTTEST,
+            score=0,
+            total_questions=40,
+            time_limit_seconds=3600,
+            admin_override=True,
+            started_at=now,
+        )
+
+        response = self.client.get(reverse("progress:lesson_path"))
+
+        self.assertContains(response, "Posttest available")
+        self.assertContains(response, "Resume posttest")
+
     def test_learning_path_requires_pretest_and_enrollment(self):
         response = self.client.get(reverse("progress:lesson_path"))
         self.assertRedirects(response, reverse("progress:student_dashboard"))

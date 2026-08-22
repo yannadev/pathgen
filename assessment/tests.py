@@ -17,7 +17,7 @@ from assessment.models import (
     AssessmentType,
 )
 from curriculum.models import AssessmentQuestion, Lesson
-from progress.models import StudentProgress
+from progress.models import LessonProgress, StudentProgress
 
 
 @override_settings(PATHGEN_PRETEST_TIME_LIMIT_SECONDS=3600)
@@ -320,3 +320,210 @@ class StudentPretestFlowTests(TestCase):
             response,
             reverse("assessment:pretest_result", kwargs={"session_id": session.id}),
         )
+
+
+@override_settings(PATHGEN_PRETEST_TIME_LIMIT_SECONDS=3600)
+class StudentPosttestFlowTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        call_command("seed_content", stdout=StringIO())
+        cls.teacher = User.objects.create_user(
+            email="teacher.posttest@example.com",
+            password="teacher-pass",
+            first_name="Mara",
+            last_name="Santos",
+            role=User.Role.TEACHER,
+        )
+        cls.student = User.objects.create_user(
+            email="student.posttest@example.com",
+            password="student-pass",
+            first_name="Lino",
+            last_name="Reyes",
+            role=User.Role.STUDENT,
+        )
+        cls.other_student = User.objects.create_user(
+            email="other.posttest@example.com",
+            password="other-pass",
+            first_name="Tala",
+            last_name="Cruz",
+            role=User.Role.STUDENT,
+        )
+        classroom = Classroom.objects.create(
+            name="Grade 7 Posttest",
+            teacher=cls.teacher,
+        )
+        ClassStudent.objects.create(classroom=classroom, student=cls.student)
+        ClassStudent.objects.create(classroom=classroom, student=cls.other_student)
+        cls.lessons = list(Lesson.objects.order_by("order_index"))
+
+    def setUp(self):
+        self.client.force_login(self.student)
+        now = timezone.now()
+        AssessmentSession.objects.create(
+            student=self.student,
+            type=AssessmentType.PRETEST,
+            score=Decimal("40.00"),
+            total_questions=40,
+            time_limit_seconds=3600,
+            started_at=now,
+            completed_at=now,
+        )
+        StudentProgress.objects.create(
+            student=self.student,
+            current_lesson=self.lessons[0],
+            status=StudentProgress.Status.IN_PROGRESS,
+            last_activity_at=now,
+        )
+
+    def _unlock_posttest(self):
+        now = timezone.now()
+        for lesson in self.lessons:
+            LessonProgress.objects.create(
+                student=self.student,
+                lesson=lesson,
+                status=LessonProgress.Status.PASSED,
+                first_started_at=now,
+                last_activity_at=now,
+            )
+        StudentProgress.objects.filter(student=self.student).update(
+            current_lesson=None,
+            status=StudentProgress.Status.COMPLETED,
+        )
+
+    @staticmethod
+    def _answer_data(*, correct=True):
+        return {
+            AssessmentSubmissionForm.field_name(question.id): (
+                question.correct_answer_index
+                if correct
+                else (question.correct_answer_index + 1) % 4
+            )
+            for question in AssessmentQuestion.objects.all()
+        }
+
+    def test_posttest_requires_all_lessons_without_an_override(self):
+        response = self.client.post(reverse("assessment:posttest_start"))
+
+        self.assertEqual(response.status_code, 403)
+        self.assertFalse(
+            AssessmentSession.objects.filter(
+                student=self.student,
+                type=AssessmentType.POSTTEST,
+            ).exists()
+        )
+
+    def test_posttest_reuses_bank_grades_responses_and_shows_learning_gain(self):
+        self._unlock_posttest()
+        mastery = BKTMastery.objects.create(
+            student=self.student,
+            lesson=self.lessons[0],
+            p_known=Decimal("0.5000"),
+        )
+        AssessmentConfig.objects.create(
+            type=AssessmentType.POSTTEST,
+            time_limit_seconds=5400,
+        )
+
+        response = self.client.post(reverse("assessment:posttest_start"))
+        session = AssessmentSession.objects.get(
+            student=self.student,
+            type=AssessmentType.POSTTEST,
+        )
+        self.assertRedirects(
+            response,
+            reverse("assessment:posttest", kwargs={"session_id": session.id}),
+        )
+        self.assertEqual(session.total_questions, 40)
+        self.assertEqual(session.time_limit_seconds, 5400)
+
+        delivery = self.client.get(
+            reverse("assessment:posttest", kwargs={"session_id": session.id})
+        )
+        self.assertContains(delivery, "data-assessment-timer")
+        self.assertContains(delivery, "js/timer.js")
+        self.assertEqual(len(delivery.context["question_items"]), 40)
+
+        response = self.client.post(
+            reverse("assessment:posttest_submit", kwargs={"session_id": session.id}),
+            self._answer_data(correct=True),
+        )
+        self.assertRedirects(
+            response,
+            reverse("assessment:posttest_result", kwargs={"session_id": session.id}),
+        )
+        session.refresh_from_db()
+        self.assertEqual(session.score, Decimal("100.00"))
+        self.assertEqual(session.responses.count(), 40)
+        self.assertEqual(
+            set(session.responses.values_list("assessment_question_id", flat=True)),
+            set(AssessmentQuestion.objects.values_list("id", flat=True)),
+        )
+        self.assertEqual(
+            StudentProgress.objects.get(student=self.student).status,
+            StudentProgress.Status.POSTTEST_TAKEN,
+        )
+        mastery.refresh_from_db()
+        self.assertEqual(mastery.p_known, Decimal("0.5000"))
+
+        result = self.client.get(
+            reverse("assessment:posttest_result", kwargs={"session_id": session.id})
+        )
+        self.assertContains(result, "100")
+        self.assertContains(result, "View completion")
+        completion = self.client.get(reverse("assessment:completion"))
+        self.assertContains(completion, "Pretest score")
+        self.assertContains(completion, "Posttest score")
+        self.assertContains(completion, "+60")
+
+        self.client.force_login(self.other_student)
+        self.assertEqual(
+            self.client.get(
+                reverse("assessment:posttest_result", kwargs={"session_id": session.id})
+            ).status_code,
+            404,
+        )
+
+    def test_completed_posttest_cannot_be_started_again(self):
+        self._unlock_posttest()
+        self.client.post(reverse("assessment:posttest_start"))
+        session = AssessmentSession.objects.get(
+            student=self.student,
+            type=AssessmentType.POSTTEST,
+        )
+        self.client.post(
+            reverse("assessment:posttest_submit", kwargs={"session_id": session.id}),
+            self._answer_data(correct=False),
+        )
+
+        response = self.client.post(reverse("assessment:posttest_start"))
+
+        self.assertEqual(
+            AssessmentSession.objects.filter(
+                student=self.student,
+                type=AssessmentType.POSTTEST,
+            ).count(),
+            1,
+        )
+        self.assertRedirects(
+            response,
+            reverse("assessment:posttest_result", kwargs={"session_id": session.id}),
+        )
+
+    def test_admin_override_session_bypasses_lesson_completion_gate(self):
+        now = timezone.now()
+        session = AssessmentSession.objects.create(
+            student=self.student,
+            type=AssessmentType.POSTTEST,
+            score=0,
+            total_questions=40,
+            time_limit_seconds=3600,
+            admin_override=True,
+            started_at=now,
+        )
+
+        response = self.client.get(
+            reverse("assessment:posttest", kwargs={"session_id": session.id})
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Posttest")
