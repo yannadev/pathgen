@@ -1,0 +1,15 @@
+{% extends "student_base.html" %}
+
+{% block title %}Pretest unavailable | Pathgen{% endblock %}
+{% block page_heading %}Pretest unavailable{% endblock %}
+
+{% block page_content %}
+<section class="rounded-2xl border border-rose-200 bg-white p-5 md:p-7 dark:border-rose-900 dark:bg-slate-900" role="alert">
+    <div class="grid size-11 place-items-center rounded-xl bg-rose-50 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300">
+        <i class="iconsax text-xl" icon-name="danger" aria-hidden="true"></i>
+    </div>
+    <h2 class="mt-4 text-lg font-semibold tracking-tight text-slate-950 dark:text-white">The assessment is not ready</h2>
+    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300">{{ setup_error }}</p>
+    <a href="{% url 'progress:student_dashboard' %}" class="mt-5 inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-xl border border-slate-300 px-4 text-sm font-semibold text-slate-700 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-slate-500/15 dark:border-slate-600 dark:text-slate-200 dark:hover:bg-slate-800">Return to dashboard</a>
+</section>
+{% endblock %}

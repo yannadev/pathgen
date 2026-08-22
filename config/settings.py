@@ -130,6 +130,10 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+if DEBUG:
+    STORAGES["staticfiles"] = {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
@@ -141,6 +145,9 @@ LOGOUT_REDIRECT_URL = "accounts:login"
 # caps a stale interval so an abandoned tab cannot inflate study time.
 PATHGEN_HEARTBEAT_MIN_INTERVAL = 30
 PATHGEN_HEARTBEAT_STALE_AFTER = 120
+
+# AssessmentConfig overrides this value when an administrator has set one.
+PATHGEN_PRETEST_TIME_LIMIT_SECONDS = 60 * 60
 
 
 GROQ_API_KEY = env("GROQ_API_KEY", default="")

@@ -5,5 +5,36 @@
 
 {% block page_content %}
     <p class="mb-5 text-sm text-slate-600 dark:text-slate-300">You are enrolled in <strong class="font-semibold text-slate-900 dark:text-slate-100">{{ classroom.name }}</strong> with {{ classroom.teacher.get_full_name }}.</p>
-    {% include "components/empty_state.html" with icon="archive-book" title="Your learning path is being prepared" message="Chill lang, just chill." %}
+
+    {% if completed_pretest %}
+        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-200/50 md:p-7 dark:border-slate-800 dark:bg-slate-900 dark:shadow-none" aria-labelledby="baseline-heading">
+            <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                    <p class="text-sm font-medium text-cyan-700 dark:text-cyan-300">Baseline complete</p>
+                    <h2 id="baseline-heading" class="mt-1 text-xl font-semibold tracking-tight text-slate-950 dark:text-white">Your learning path is ready</h2>
+                    <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300">Your pretest established a starting point for each lesson. Continue when you are ready.</p>
+                </div>
+                <a href="{% url 'assessment:pretest_result' completed_pretest.id %}" class="inline-flex min-h-11 shrink-0 items-center justify-center whitespace-nowrap rounded-xl bg-cyan-600 px-5 text-sm font-semibold text-white hover:bg-cyan-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/25 active:translate-y-px dark:bg-cyan-500 dark:text-cyan-950 dark:hover:bg-cyan-400">View pretest result</a>
+            </div>
+        </section>
+    {% elif active_pretest %}
+        <section class="rounded-2xl border border-cyan-200 bg-cyan-50 p-5 md:p-7 dark:border-cyan-900 dark:bg-cyan-950/30" aria-labelledby="resume-heading">
+            <p class="text-sm font-medium text-cyan-800 dark:text-cyan-200">Pretest in progress</p>
+            <h2 id="resume-heading" class="mt-1 text-xl font-semibold tracking-tight text-slate-950 dark:text-white">Return to your assessment</h2>
+            <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-700 dark:text-slate-300">The timer continues even while this page is open.</p>
+            <a href="{% url 'assessment:pretest' active_pretest.id %}" class="mt-5 inline-flex min-h-11 items-center justify-center whitespace-nowrap rounded-xl bg-cyan-700 px-5 text-sm font-semibold text-white hover:bg-cyan-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/25 active:translate-y-px dark:bg-cyan-400 dark:text-cyan-950 dark:hover:bg-cyan-300">Resume pretest</a>
+        </section>
+    {% else %}
+        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm shadow-slate-200/50 md:p-7 dark:border-slate-800 dark:bg-slate-900 dark:shadow-none" aria-labelledby="pretest-heading">
+            <div class="max-w-2xl">
+                <div class="mb-5 grid size-12 place-items-center rounded-xl bg-cyan-100 text-cyan-800 dark:bg-cyan-950 dark:text-cyan-200">
+                    <i class="iconsax text-2xl" icon-name="clipboard-text" aria-hidden="true"></i>
+                </div>
+                <h2 id="pretest-heading" class="text-xl font-semibold tracking-tight text-slate-950 dark:text-white">Take your baseline pretest</h2>
+                <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">Answer 40 multiple-choice questions. Your results set the starting point for all four lessons.</p>
+                <button type="button" class="mt-5 min-h-11 whitespace-nowrap rounded-xl bg-cyan-700 px-5 text-sm font-semibold text-white hover:bg-cyan-800 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/25 active:translate-y-px dark:bg-cyan-400 dark:text-cyan-950 dark:hover:bg-cyan-300" data-dialog-open="pretest-start-dialog">Start pretest</button>
+            </div>
+        </section>
+        {% include "components/modals/pretest_start_confirm.html" %}
+    {% endif %}
 {% endblock %}
