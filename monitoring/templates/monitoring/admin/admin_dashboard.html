@@ -1,0 +1,8 @@
+{% extends "admin_base.html" %}
+
+{% block title %}Admin dashboard | Pathgen{% endblock %}
+{% block page_heading %}Dashboard{% endblock %}
+
+{% block page_content %}
+    {% include "components/empty_state.html" with icon="activity-chart" title="No system summary yet" message="System activity and account summaries will appear here once monitoring is available." %}
+{% endblock %}

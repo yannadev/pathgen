@@ -1,0 +1,92 @@
+{% with current_view=request.resolver_match.view_name %}
+<aside
+    id="pathgen-sidebar"
+    class="fixed inset-y-0 left-0 z-50 flex w-72 -translate-x-full flex-col border-r border-slate-200 bg-white px-4 py-5 shadow-2xl shadow-slate-950/10 transition-transform duration-200 ease-out md:translate-x-0 md:shadow-none dark:border-slate-800 dark:bg-slate-900"
+    data-sidebar
+    aria-label="Primary navigation"
+>
+    <div class="mb-7 flex items-center justify-between gap-3 px-2">
+        <a href="{% url 'accounts:home' %}" class="inline-flex min-h-11 items-center gap-3 rounded-xl pr-2 font-semibold tracking-tight focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/20">
+            <span class="grid size-10 place-items-center rounded-xl bg-cyan-400 text-base font-bold text-cyan-950">P</span>
+            <span>
+                <span class="block text-base text-slate-950 dark:text-white">Pathgen</span>
+                <span class="block text-xs font-normal text-slate-500 dark:text-slate-400">Adaptive learning</span>
+            </span>
+        </a>
+        <button type="button" class="grid size-11 place-items-center rounded-xl text-slate-500 hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/20 md:hidden dark:text-slate-300 dark:hover:bg-slate-800" data-sidebar-close>
+            <span class="sr-only">Close navigation</span>
+            <i class="iconsax text-xl" icon-name="x-circle" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <nav class="flex-1 space-y-1" aria-label="{{ shell_role|title }} navigation">
+        {% if shell_role == "student" %}
+            <a href="{% url 'progress:student_dashboard' %}" class="nav-link {% if current_view == 'progress:student_dashboard' %}nav-link-active{% endif %}" {% if current_view == 'progress:student_dashboard' %}aria-current="page"{% endif %}>
+                <i class="iconsax" icon-name="home-2" aria-hidden="true"></i>
+                <span>Dashboard</span>
+            </a>
+            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Learning path is not available yet">
+                <i class="iconsax" icon-name="archive-book" aria-hidden="true"></i>
+                <span>Lesson</span>
+            </span>
+            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Profile is not available yet">
+                <i class="iconsax" icon-name="user-2-circle" aria-hidden="true"></i>
+                <span>Profile</span>
+            </span>
+        {% elif shell_role == "teacher" %}
+            <a href="{% url 'monitoring:teacher_dashboard' %}" class="nav-link {% if current_view == 'monitoring:teacher_dashboard' %}nav-link-active{% endif %}" {% if current_view == 'monitoring:teacher_dashboard' %}aria-current="page"{% endif %}>
+                <i class="iconsax" icon-name="home-2" aria-hidden="true"></i>
+                <span>Dashboard</span>
+            </a>
+            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Classrooms are not available yet">
+                <i class="iconsax" icon-name="teacher" aria-hidden="true"></i>
+                <span>Classrooms</span>
+            </span>
+            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Content browsing is not available yet">
+                <i class="iconsax" icon-name="book-open" aria-hidden="true"></i>
+                <span>Content</span>
+            </span>
+            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Profile is not available yet">
+                <i class="iconsax" icon-name="user-2-circle" aria-hidden="true"></i>
+                <span>Profile</span>
+            </span>
+        {% else %}
+            <a href="{% url 'monitoring:admin_dashboard' %}" class="nav-link {% if current_view == 'monitoring:admin_dashboard' %}nav-link-active{% endif %}" {% if current_view == 'monitoring:admin_dashboard' %}aria-current="page"{% endif %}>
+                <i class="iconsax" icon-name="home-2" aria-hidden="true"></i>
+                <span>Dashboard</span>
+            </a>
+            <span class="nav-link nav-link-disabled" aria-disabled="true" title="User management is not available yet">
+                <i class="iconsax" icon-name="users" aria-hidden="true"></i>
+                <span>Users</span>
+            </span>
+            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Class management is not available yet">
+                <i class="iconsax" icon-name="teacher" aria-hidden="true"></i>
+                <span>Classrooms</span>
+            </span>
+            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Content browsing is not available yet">
+                <i class="iconsax" icon-name="book-open" aria-hidden="true"></i>
+                <span>Contents</span>
+            </span>
+            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Overrides are not available yet">
+                <i class="iconsax" icon-name="setting-2" aria-hidden="true"></i>
+                <span>Override</span>
+            </span>
+            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Activity logs are not available yet">
+                <i class="iconsax" icon-name="activity-chart" aria-hidden="true"></i>
+                <span>Activity Logs</span>
+            </span>
+            <span class="nav-link nav-link-disabled" aria-disabled="true" title="Profile is not available yet">
+                <i class="iconsax" icon-name="user-2-circle" aria-hidden="true"></i>
+                <span>Profile</span>
+            </span>
+        {% endif %}
+    </nav>
+
+    {% include "components/profile_dropdown.html" %}
+</aside>
+
+<button class="fixed inset-0 z-40 bg-slate-950/45 md:hidden" type="button" data-sidebar-overlay hidden>
+    <span class="sr-only">Close navigation</span>
+</button>
+{% include "components/modals/logout_confirm.html" %}
+{% endwith %}

@@ -1,0 +1,8 @@
+{% extends "student_base.html" %}
+
+{% block title %}Class assignment pending | Pathgen{% endblock %}
+{% block page_heading %}Class assignment pending{% endblock %}
+
+{% block page_content %}
+    {% include "components/empty_state.html" with icon="clock" title="Your class is not ready yet" message="Please wait for the admin to add this account to your respective class." show_logout=True %}
+{% endblock %}

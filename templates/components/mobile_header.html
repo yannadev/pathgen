@@ -1,0 +1,16 @@
+<header class="sticky top-0 z-30 flex min-h-16 items-center justify-between border-b border-slate-200/80 bg-slate-50/95 px-4 backdrop-blur md:hidden dark:border-slate-800 dark:bg-slate-950/95">
+    <a href="{% url 'accounts:home' %}" class="inline-flex min-h-11 items-center gap-2 rounded-xl pr-2 font-semibold tracking-tight focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/20">
+        <span class="grid size-9 place-items-center rounded-xl bg-cyan-400 text-sm font-bold text-cyan-950">P</span>
+        Pathgen
+    </a>
+    <button
+        type="button"
+        class="grid size-11 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+        data-sidebar-open
+        aria-controls="pathgen-sidebar"
+        aria-expanded="false"
+    >
+        <span class="sr-only">Open navigation</span>
+        <i class="iconsax text-xl" icon-name="hamburger-menu" aria-hidden="true"></i>
+    </button>
+</header>

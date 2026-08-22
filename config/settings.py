@@ -57,6 +57,8 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "core.middleware.UserSessionHeartbeatMiddleware",
+    "core.middleware.ForcePasswordChangeMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -131,6 +133,14 @@ STORAGES = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
+LOGIN_URL = "accounts:login"
+LOGIN_REDIRECT_URL = "accounts:home"
+LOGOUT_REDIRECT_URL = "accounts:login"
+
+# Browser pings arrive every 45 seconds. The server ignores burst traffic and
+# caps a stale interval so an abandoned tab cannot inflate study time.
+PATHGEN_HEARTBEAT_MIN_INTERVAL = 30
+PATHGEN_HEARTBEAT_STALE_AFTER = 120
 
 
 GROQ_API_KEY = env("GROQ_API_KEY", default="")

@@ -1,0 +1,10 @@
+<section class="rounded-2xl border border-dashed border-slate-300 bg-white px-5 py-12 text-center dark:border-slate-700 dark:bg-slate-900/70" aria-labelledby="empty-state-title">
+    <div class="mx-auto grid size-12 place-items-center rounded-xl bg-cyan-50 text-cyan-700 dark:bg-cyan-950/60 dark:text-cyan-300">
+        <i class="iconsax text-2xl" icon-name="{{ icon|default:'archive-book' }}" aria-hidden="true"></i>
+    </div>
+    <h2 id="empty-state-title" class="mt-4 text-base font-semibold text-slate-950 dark:text-white">{{ title|default:"Nothing here yet" }}</h2>
+    <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600 dark:text-slate-300">{{ message|default:"Chill lang, just chill." }}</p>
+    {% if show_logout %}
+        <button type="button" class="mt-6 min-h-11 whitespace-nowrap rounded-xl bg-cyan-400 px-5 text-sm font-semibold text-cyan-950 hover:bg-cyan-300 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-cyan-500/25" data-dialog-open="logout-dialog">Log out</button>
+    {% endif %}
+</section>

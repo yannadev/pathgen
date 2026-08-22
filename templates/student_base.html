@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="min-h-[100dvh]">
+    {% include "components/sidebar.html" with shell_role="student" %}
+    <div class="min-h-[100dvh] md:pl-72">
+        {% include "components/mobile_header.html" with shell_role="student" %}
+        <main id="main-content" class="px-4 py-6 md:px-6 md:py-8 lg:px-8">
+            <div class="mx-auto max-w-7xl">
+                <header class="mb-7">
+                    <p class="mb-1 text-sm font-medium text-cyan-700 dark:text-cyan-300">Student space</p>
+                    <h1 class="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white md:text-3xl">
+                        {% block page_heading %}Dashboard{% endblock %}
+                    </h1>
+                </header>
+                {% block page_content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}

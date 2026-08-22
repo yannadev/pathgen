@@ -1,0 +1,8 @@
+{% extends "teacher_base.html" %}
+
+{% block title %}Teacher dashboard | Pathgen{% endblock %}
+{% block page_heading %}Dashboard{% endblock %}
+
+{% block page_content %}
+    {% include "components/empty_state.html" with icon="teacher" title="No classroom summary yet" message="Classroom insights will appear here once monitoring is available." %}
+{% endblock %}
