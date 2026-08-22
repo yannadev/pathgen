@@ -46,6 +46,23 @@ class UpdateMasteryTests(unittest.TestCase):
     def test_learning_transition_applies_with_no_new_evidence(self):
         self.assertAlmostEqual(update_mastery(0.5, 0, 0, 0.2, 0.1, 0.25), 0.6)
 
+    def test_correct_evidence_increases_mastery_while_wrong_evidence_decreases_it(self):
+        correct_result = update_mastery(0.5, 3, 0, 0.0, 0.1, 0.25)
+        wrong_result = update_mastery(0.5, 0, 3, 0.0, 0.1, 0.25)
+
+        self.assertGreater(correct_result, 0.5)
+        self.assertLess(wrong_result, 0.5)
+
+    def test_certain_priors_remain_well_defined_at_probability_boundaries(self):
+        self.assertAlmostEqual(
+            update_mastery(0.0, 0, 0, 0.2, 0.1, 0.25),
+            0.2,
+        )
+        self.assertEqual(
+            update_mastery(1.0, 0, 0, 0.2, 0.1, 0.25),
+            1.0,
+        )
+
     def test_impossible_evidence_is_rejected(self):
         with self.assertRaises(ValueError):
             update_mastery(0.5, 0, 1, 0.2, 0.0, 1.0)
@@ -55,6 +72,10 @@ class UpdateMasteryTests(unittest.TestCase):
             update_mastery(-0.1, 1, 0, 0.2, 0.1, 0.25)
         with self.assertRaises(ValueError):
             update_mastery(0.5, -1, 0, 0.2, 0.1, 0.25)
+        with self.assertRaises(ValueError):
+            update_mastery(np.nan, 1, 0, 0.2, 0.1, 0.25)
+        with self.assertRaises(TypeError):
+            update_mastery(0.5, True, 0, 0.2, 0.1, 0.25)
 
 
 if __name__ == "__main__":
